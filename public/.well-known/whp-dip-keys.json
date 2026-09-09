@@ -2,17 +2,17 @@
   "registryVersion": "WHP-DIP-KEYS-v1",
   "issuer": "Wheeler Hubbell Publishing, Inc.",
   "protocol": "Decision Integrity Protocol",
-  "status": "SIGNING_IDENTITY_PROVISIONED_RUNTIME_NOT_YET_VERIFIED",
+  "status": "ACTIVE_SIGNING_IDENTITY",
   "keys": [
     {
       "id": "whp-dip-ed25519-8214a0fd67bb70fe",
       "algorithm": "Ed25519",
-      "status": "provisioned_not_active",
+      "status": "active",
       "publicKeySpkiBase64": "MCowBQYDK2VwAyEAAEsnZAyHsyuOTwEYq5sH52NLI2xrJyo3WbIMspycx/0=",
-      "validFrom": null,
+      "validFrom": "2026-09-09T12:26:26Z",
       "validUntil": null,
-      "note": "Public verification identity corresponding to the signing key provisioned in the private runtime. This key is not active for official-result verification until WHP records runtime verification and changes status to active."
+      "note": "Active WHP verification identity for official DIP v1.0.0-rc.1 result envelopes. The corresponding private signing key remains outside this public repository."
     }
   ],
-  "note": "A provisioned key is not yet an active official-result authority. Official WHP DIP standing begins only after the private runtime is verified and this registry explicitly marks the key active. Private signing keys are never published here."
+  "note": "An official WHP DIP result must validate under the public result contract and carry a valid signature from a key that was active at the receipt issuance time. Private signing keys are never published here."
 }
