@@ -1,12 +1,51 @@
 # Decision Integrity Protocol (DIP)
 
-Public protocol and verification surface for **Decision Integrity Protocol v1.0.0-rc.1**, stewarded by Wheeler Hubbell Publishing, Inc. (WHP).
+**DIP is a decision-integrity protocol for evaluating whether a proposed action is authorized under defined standing, authority, warrants, constraints, and requested force. It returns a verifiable decision receipt.**
 
-This repository tells callers what DIP promises to do, what a caller may submit, what DIP may return, what rules govern an evaluation, how releases are identified, and how an official WHP result is verified.
+**DIP does not grant authority. It evaluates whether asserted authority supports a specific proposed transition.**
 
-It does **not** publish the evaluator implementation, private operational materials, payment configuration, signing keys, or future private evaluator improvements.
+This repository is the public protocol and verification surface maintained by Wheeler Hubbell Publishing, Inc. It is not the private evaluator repository.
 
-## RC1 identity
+## Four questions this repository answers
+
+### What does DIP do?
+
+Read [`PROTOCOL.md`](PROTOCOL.md). It states the bounded public promise, evaluation stages, standing dimensions, result vocabulary, halt behavior, non-claims, and RC1 release identity.
+
+### How do I ask it a valid question?
+
+Use [`public/evaluation-input.schema.json`](public/evaluation-input.schema.json) as the machine contract. [`EXAMPLES.md`](EXAMPLES.md) shows the behavior in plain language without publishing the evaluator.
+
+### What will it return?
+
+An official production result uses the envelope defined by [`public/official-result.schema.json`](public/official-result.schema.json). The envelope binds the result to the RC1 release, public terms version, receipt identity, request digest, result digest, issuance time, and WHP signing identity.
+
+### How do I verify that a result is official?
+
+Follow [`OFFICIAL_RESULT_VERIFICATION.md`](OFFICIAL_RESULT_VERIFICATION.md) or use [`verify/verify-official-result.mjs`](verify/verify-official-result.mjs) with the WHP public-key registry at [`public/.well-known/whp-dip-keys.json`](public/.well-known/whp-dip-keys.json).
+
+## Public / private boundary
+
+Public here:
+
+- DIP's public promise and governing contract;
+- input and result schemas;
+- bounded examples;
+- public terms and limits;
+- release identity and digest;
+- WHP public verification-key registry;
+- independent official-result verifier;
+- security/authenticity reporting guidance.
+
+Private elsewhere:
+
+- evaluator implementation and canonical executable runtime;
+- private signing keys;
+- production payment and wallet controls;
+- deployment credentials;
+- private operational controls, tests, and implementation improvements.
+
+## Release identity
 
 Canonical release: `1.0.0-rc.1`
 
@@ -14,28 +53,16 @@ Canonical sealed archive SHA-256:
 
 `6a73d326d071c8c297609b74a55f4bf6328012ff446ac83cc58fb9a6374c6263`
 
-## What DIP does
+## Terms, limits, and security
 
-DIP evaluates a proposed information-to-action transition against supplied source identity, standing, qualifiers, warrants, authority, jurisdiction, temporal validity, requested force, and any supplied domain gate. It returns a bounded disposition and audit trace.
+Public terms: [`PUBLIC_TERMS.md`](PUBLIC_TERMS.md)
 
-DIP does not issue a universal truth verdict, legal certification, safety certification, or WHP Standing Mark merely by running an evaluation.
+Security and authenticity: [`SECURITY.md`](SECURITY.md)
 
-## Public surface
+Source/release identity: [`SOURCE_IDENTITY.md`](SOURCE_IDENTITY.md)
 
-- `PROTOCOL.md` — promise, stages, governing invariants, and limits.
-- `public/dip-v1.schema.json` — public structural vocabulary.
-- `public/evaluation-input.schema.json` — callable evaluation input contract.
-- `public/official-result.schema.json` — official signed-result envelope contract.
-- `OFFICIAL_RESULT_VERIFICATION.md` — independent verification procedure.
-- `verify/verify-official-result.mjs` — verifier that checks result integrity and WHP signature without containing the evaluator.
-- `public/.well-known/whp-dip-keys.json` — WHP public verification-key registry. Until an active key is published, no result should be represented as an official signed WHP result.
+## Issuance status
 
-## Private surface
+The public WHP key registry is currently empty. Until an active WHP verification key is published there and the private runtime is separately provisioned and verified, **no newly presented signed result is entitled to official WHP DIP standing**.
 
-The canonical evaluator executable, its internal implementation, private runtime, signing private key, payment settlement configuration, and operational controls are not part of this repository.
-
-## Execution status
-
-The production paid execution service is **not represented as active by this public repository until the private runtime, signing key, settlement configuration, and endpoint are actually provisioned and verified.**
-
-The public contract is intentionally useful without exposing the machine itself.
+This repository does not publish the evaluator implementation and does not itself issue a WHP Standing Mark, legal certification, safety certification, or universal truth verdict.
