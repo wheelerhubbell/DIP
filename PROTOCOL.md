@@ -1,10 +1,14 @@
 # Decision Integrity Protocol v1.0.0-rc.1 — Public Protocol Contract
 
+Public terms version: `WHP-DIP-PUBLIC-TERMS-v1`
+
 ## Promise
 
-DIP evaluates whether a proposed information-to-action transition is supported by the source object, its carried standing and qualifiers, the cited warrants, the actor's authority, the target and jurisdiction, temporal validity, and any supplied domain gate.
+**DIP evaluates whether a proposed transition is authorized under declared standing, authority, warrants, constraints, and requested force, then returns a verifiable decision receipt.**
 
-The protocol returns a bounded result. It does not expand the force of the supplied record merely because an evaluation was requested.
+**DIP does not create authority or replace law, governance, or human judgment; it evaluates whether the authority asserted in a specific request supports the proposed transition.**
+
+The protocol does not expand the force of the supplied record merely because an evaluation was requested.
 
 ## Evaluation stages
 
@@ -63,8 +67,10 @@ Canonical sealed archive SHA-256:
 
 `6a73d326d071c8c297609b74a55f4bf6328012ff446ac83cc58fb9a6374c6263`
 
-A result claiming to be official must identify its release and be verifiable under `OFFICIAL_RESULT_VERIFICATION.md`. Possession of output text without the required official-result envelope does not establish that WHP issued it.
+A result claiming to be official must identify this release, the applicable public terms version, a unique receipt identity, the exact request and result digests, issuance time, and an active WHP signing identity, and must verify under `OFFICIAL_RESULT_VERIFICATION.md`.
+
+Possession of output text, copied code, a compatible implementation, or a DIP-shaped result without the required official-result envelope does not establish that WHP issued it.
 
 ## Implementation boundary
 
-This document specifies the observable contract and governing rules. It does not publish the evaluator implementation, private runtime, signing private key, payment configuration, or private operational controls.
+This document specifies the observable contract and governing rules. It does not publish the evaluator implementation, canonical executable runtime, private signing key, payment configuration, deployment credentials, or private operational controls.
