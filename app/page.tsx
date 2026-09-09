@@ -19,19 +19,30 @@ export default function Home() {
       <h1 style={{ fontSize: 48, lineHeight: 1.05, marginBottom: 16 }}>
         Decision Integrity Protocol
       </h1>
-      <p style={{ fontSize: 20 }}>
-        Public protocol, interface contract, and official-result verification
-        surface for DIP v1.0.0-rc.1.
+      <p style={{ fontSize: 22 }}>
+        <strong>DIP is a decision-integrity protocol for evaluating whether a
+        proposed action is authorized under defined standing, authority,
+        warrants, constraints, and requested force. It returns a verifiable
+        decision receipt.</strong>
+      </p>
+      <p style={{ fontSize: 19 }}>
+        <strong>DIP does not grant authority.</strong> It evaluates whether
+        asserted authority supports a specific proposed transition.
       </p>
       <hr style={{ margin: "40px 0" }} />
       <p>
-        This public surface explains what DIP promises to evaluate, what an
-        evaluation accepts, what it may return, which rules govern the result,
-        and how to verify that a result was officially issued by WHP.
+        This public surface defines what an evaluation accepts, what it may
+        return, the rules and limits that govern the result, the identity of the
+        RC1 release, and how to verify that a result was officially issued by
+        Wheeler Hubbell Publishing, Inc.
       </p>
       <p>
         It does <strong>not</strong> publish the evaluator implementation,
-        private signing keys, payment configuration, or private runtime.
+        canonical executable evaluator, private signing keys, payment
+        configuration, deployment credentials, or private operational controls.
+      </p>
+      <p>
+        <strong>Protocol:</strong> <a href="https://github.com/wheelerhubbell/DIP/blob/main/PROTOCOL.md">PROTOCOL.md</a>
       </p>
       <p>
         <strong>Evaluation input contract:</strong>{" "}
@@ -52,15 +63,16 @@ export default function Home() {
       </p>
       <hr style={{ margin: "40px 0" }} />
       <p>
-        <strong>Execution status:</strong> the production paid execution service
-        is separate from this repository and is not represented as active until
-        its private evaluator runtime, signing key, and settlement configuration
-        are actually provisioned and verified.
+        <strong>Execution status:</strong> the production execution service is
+        separate from this repository and is not represented as active until its
+        private evaluator runtime, signing identity, settlement configuration,
+        and verification path are actually provisioned and verified.
       </p>
       <p>
-        DIP does not issue a WHP Standing Mark, legal certification, safety
-        certification, or universal truth verdict merely by running an
-        evaluation.
+        An evaluation does not replace law, human judgment, organizational
+        governance, or external authority. It does not issue a WHP Standing
+        Mark, legal certification, safety certification, or universal truth
+        verdict merely by running.
       </p>
     </main>
   );
