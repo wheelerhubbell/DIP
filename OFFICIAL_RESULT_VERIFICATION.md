@@ -13,6 +13,8 @@ The envelope must identify:
 - `envelopeVersion = WHP-DIP-OFFICIAL-RESULT-v1`
 - `release = 1.0.0-rc.1`
 - `releaseSha256 = 6a73d326d071c8c297609b74a55f4bf6328012ff446ac83cc58fb9a6374c6263`
+- `termsVersion = WHP-DIP-PUBLIC-TERMS-v1`
+- a unique receipt ID;
 - the result ID;
 - the RC1 input digest;
 - the RC1 result digest;
@@ -40,7 +42,7 @@ The computed hexadecimal SHA-256 must equal all of:
 
 The envelope's `inputDigest` must equal `envelope.result.auditTrace.inputDigest`.
 
-These checks establish that the result body has not been substituted relative to the signed digest fields. They do not reproduce the private evaluator.
+These checks establish that the public result body has not been substituted relative to the signed digest fields. They do not reproduce the private evaluator.
 
 ## Signature statement
 
@@ -50,6 +52,8 @@ For envelope version 1, construct this exact UTF-8 string, including line breaks
 WHP-DIP-OFFICIAL-RESULT-v1
 release=<release>
 releaseSha256=<releaseSha256>
+termsVersion=<termsVersion>
+receiptId=<receiptId>
 resultId=<resultId>
 inputDigest=<inputDigest>
 resultDigest=<resultDigest>
@@ -78,8 +82,9 @@ The public registry is intentionally empty until the private signing runtime is 
 Successful verification establishes that:
 
 - the identified result is bound to the stated RC1 release;
+- the receipt identifies the public terms version governing that issuance;
 - the public portion of the result is intact relative to its RC1 result digest;
-- the identified WHP signing key signed the envelope statement; and
+- the identified WHP signing key signed the exact receipt statement; and
 - that key had published WHP authority under the key registry.
 
 It does not independently rerun the private evaluator, establish universal truth, or convert the result into a legal, safety, security, or Standing Mark certification.
