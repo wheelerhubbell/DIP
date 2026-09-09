@@ -6,6 +6,7 @@ import { createHash, createPublicKey, verify as verifySignature } from "node:cry
 const RELEASE = "1.0.0-rc.1";
 const RELEASE_SHA256 = "6a73d326d071c8c297609b74a55f4bf6328012ff446ac83cc58fb9a6374c6263";
 const ENVELOPE_VERSION = "WHP-DIP-OFFICIAL-RESULT-v1";
+const TERMS_VERSION = "WHP-DIP-PUBLIC-TERMS-v1";
 
 const [receiptPath, registryPath] = process.argv.slice(2);
 if (!receiptPath || !registryPath) {
@@ -25,6 +26,8 @@ if (envelope.envelopeVersion !== ENVELOPE_VERSION) fail("unsupported envelope ve
 if (envelope.protocol !== "Decision Integrity Protocol") fail("protocol mismatch");
 if (envelope.release !== RELEASE) fail("release mismatch");
 if (envelope.releaseSha256 !== RELEASE_SHA256) fail("release SHA-256 mismatch");
+if (envelope.termsVersion !== TERMS_VERSION) fail("terms version mismatch");
+if (!envelope.receiptId) fail("receiptId missing");
 if (envelope.result?.protocolVersion !== RELEASE) fail("result protocol version mismatch");
 if (envelope.resultId !== envelope.result?.id) fail("result ID mismatch");
 if (envelope.inputDigest !== envelope.result?.auditTrace?.inputDigest) fail("input digest mismatch");
@@ -56,6 +59,8 @@ const statement = [
   ENVELOPE_VERSION,
   `release=${envelope.release}`,
   `releaseSha256=${envelope.releaseSha256}`,
+  `termsVersion=${envelope.termsVersion}`,
+  `receiptId=${envelope.receiptId}`,
   `resultId=${envelope.resultId}`,
   `inputDigest=${envelope.inputDigest}`,
   `resultDigest=${envelope.resultDigest}`,
@@ -72,7 +77,9 @@ const ok = verifySignature(
 
 if (!ok) fail("WHP signature is invalid");
 
-console.log(`VALID OFFICIAL WHP DIP RESULT: ${envelope.resultId}`);
+console.log(`VALID OFFICIAL WHP DIP RESULT: ${envelope.receiptId}`);
+console.log(`resultId: ${envelope.resultId}`);
 console.log(`release: ${envelope.release}`);
+console.log(`termsVersion: ${envelope.termsVersion}`);
 console.log(`keyId: ${envelope.keyId}`);
 console.log(`resultClass: ${envelope.result.resultClass}`);
