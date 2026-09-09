@@ -2,7 +2,17 @@
   "registryVersion": "WHP-DIP-KEYS-v1",
   "issuer": "Wheeler Hubbell Publishing, Inc.",
   "protocol": "Decision Integrity Protocol",
-  "status": "NOT_YET_ISSUING_OFFICIAL_SIGNED_RESULTS",
-  "keys": [],
-  "note": "An official signed WHP DIP result requires a keyId matching an active key published in this registry. An empty registry means no signed result is presently entitled to official WHP standing. Private signing keys are never published here."
+  "status": "SIGNING_IDENTITY_PROVISIONED_RUNTIME_NOT_YET_VERIFIED",
+  "keys": [
+    {
+      "id": "whp-dip-ed25519-8214a0fd67bb70fe",
+      "algorithm": "Ed25519",
+      "status": "provisioned_not_active",
+      "publicKeySpkiBase64": "MCowBQYDK2VwAyEAAEsnZAyHsyuOTwEYq5sH52NLI2xrJyo3WbIMspycx/0=",
+      "validFrom": null,
+      "validUntil": null,
+      "note": "Public verification identity corresponding to the signing key provisioned in the private runtime. This key is not active for official-result verification until WHP records runtime verification and changes status to active."
+    }
+  ],
+  "note": "A provisioned key is not yet an active official-result authority. Official WHP DIP standing begins only after the private runtime is verified and this registry explicitly marks the key active. Private signing keys are never published here."
 }
