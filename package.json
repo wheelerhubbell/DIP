@@ -10,7 +10,6 @@
   "dependencies": {
     "@x402/core": "latest",
     "@x402/evm": "latest",
-    "@x402/extensions": "latest",
     "@x402/next": "latest",
     "next": "latest",
     "react": "latest",
