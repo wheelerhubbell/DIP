@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withX402 } from "@x402/next";
-import { declareDiscoveryExtension } from "@x402/extensions/bazaar";
 import { evaluate, PROTOCOL_VERSION } from "@/lib/dip/index.js";
 import { evmAddress, network, paymentServer, price } from "@/lib/x402";
 
@@ -41,8 +40,9 @@ const handler = async (request: NextRequest) => {
   }
 };
 
-const routes = {
-  "/api/evaluate": {
+export const POST = withX402(
+  handler,
+  {
     accepts: [
       {
         scheme: "exact",
@@ -54,23 +54,6 @@ const routes = {
     description:
       "Run one deterministic Decision Integrity Protocol v1.0.0-rc.1 evaluation against a complete DIP input object.",
     mimeType: "application/json",
-    resource: {
-      description: "WHP Decision Integrity evaluation",
-      serviceName: "WHP Decision Integrity",
-      tags: ["decision-integrity", "governance", "provenance", "agents"],
-    },
-    extensions: {
-      ...declareDiscoveryExtension({
-        input: {},
-        inputSchema: {
-          type: "object",
-          description:
-            "Complete DIP v1.0.0-rc.1 evaluation input. See /dip-v1.schema.json for the canonical structural schema.",
-          additionalProperties: true,
-        },
-      }),
-    },
   },
-};
-
-export const POST = withX402(handler, routes as any, paymentServer);
+  paymentServer,
+);
