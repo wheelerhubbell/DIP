@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wheelerhubbell.example/dip/1.0.0-rc.1/evaluation-input.schema.json",
+  "title": "Decision Integrity Protocol v1.0.0-rc.1 Evaluation Input",
+  "type": "object",
+  "required": ["source", "object", "proposition", "relations", "transition", "warrants", "policies", "forceRequest", "authorityGrant"],
+  "properties": {
+    "source": { "$ref": "#/$defs/SourceRecord" },
+    "object": { "$ref": "#/$defs/InformationObject" },
+    "proposition": { "$ref": "#/$defs/Proposition" },
+    "relations": { "type": "array", "items": { "$ref": "#/$defs/Relation" } },
+    "transition": { "$ref": "#/$defs/AuthorityTransition" },
+    "warrants": { "type": "array", "items": { "$ref": "#/$defs/Warrant" } },
+    "policies": { "type": "array", "items": { "$ref": "#/$defs/Policy" } },
+    "forceRequest": { "$ref": "#/$defs/ForceRequest" },
+    "authorityGrant": { "$ref": "#/$defs/AuthorityGrant" },
+    "domainGate": { "$ref": "#/$defs/DomainGateResult" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "Capability": { "enum": ["CITE", "INFORM", "RECOMMEND", "CONSTRAIN", "AUTHORIZE_ACTION", "BIND_PARTY", "EXECUTE_IRREVERSIBLE"] },
+    "Dimension": { "enum": ["P", "E", "A", "O", "Q", "T", "V", "J"] },
+    "Qualifiers": {
+      "type": "object",
+      "required": ["scope", "conditions", "modality", "attribution", "uncertainty"],
+      "properties": {
+        "scope": { "type": "string" }, "conditions": { "type": "array", "items": { "type": "string" } },
+        "modality": { "type": "string" }, "attribution": { "type": "string" }, "uncertainty": { "type": "string" }
+      }, "additionalProperties": false
+    },
+    "TemporalValidity": {
+      "type": "object", "required": ["validFrom", "validUntil", "observedAt"],
+      "properties": { "validFrom": { "type": "string" }, "validUntil": { "type": ["string", "null"] }, "observedAt": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "VersionState": {
+      "type": "object", "required": ["version", "supersedes", "supersededBy", "corrections"],
+      "properties": {
+        "version": { "type": "string" }, "supersedes": { "type": ["string", "null"] }, "supersededBy": { "type": ["string", "null"] },
+        "corrections": { "type": "array", "items": { "type": "object", "required": ["correctionId", "recordedAt", "note"], "properties": { "correctionId": { "type": "string" }, "recordedAt": { "type": "string" }, "note": { "type": "string" } }, "additionalProperties": false } }
+      }, "additionalProperties": false
+    },
+    "JurisdictionTarget": {
+      "type": "object", "required": ["target", "jurisdiction", "domain"],
+      "properties": { "target": { "type": "string" }, "jurisdiction": { "type": "string" }, "domain": { "type": "string" } }, "additionalProperties": false
+    },
+    "Standing": {
+      "type": "object", "required": ["P", "E", "A", "O", "Q", "T", "V", "J"],
+      "properties": {
+        "P": { "type": "string" }, "E": { "type": "string" }, "A": { "type": "string" },
+        "O": { "type": "array", "items": { "$ref": "#/$defs/Capability" } },
+        "Q": { "$ref": "#/$defs/Qualifiers" }, "T": { "$ref": "#/$defs/TemporalValidity" },
+        "V": { "$ref": "#/$defs/VersionState" }, "J": { "$ref": "#/$defs/JurisdictionTarget" }
+      }, "additionalProperties": false
+    },
+    "SourceRecord": {
+      "type": "object", "required": ["id", "label", "locator", "provenance", "jurisdiction", "admitted", "admissionNote"],
+      "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "locator": { "type": "string" }, "provenance": { "type": "string" }, "jurisdiction": { "type": "string" }, "admitted": { "type": "boolean" }, "admissionNote": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "InformationObject": {
+      "type": "object", "required": ["id", "sourceRecordId", "exactContent", "contentHash", "standing", "registeredAt"],
+      "properties": { "id": { "type": "string" }, "sourceRecordId": { "type": "string" }, "exactContent": { "type": "string" }, "contentHash": { "type": "string" }, "standing": { "$ref": "#/$defs/Standing" }, "registeredAt": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "Proposition": {
+      "type": "object", "required": ["id", "objectId", "statedText", "carriedQualifiers", "totalizes", "standing"],
+      "properties": { "id": { "type": "string" }, "objectId": { "type": "string" }, "statedText": { "type": "string" }, "carriedQualifiers": { "$ref": "#/$defs/Qualifiers" }, "totalizes": { "type": "boolean" }, "standing": { "$ref": "#/$defs/Standing" } },
+      "additionalProperties": false
+    },
+    "Relation": {
+      "type": "object", "required": ["id", "fromPropositionId", "toPropositionId", "relationType", "joinWarrantId", "assertedForce"],
+      "properties": { "id": { "type": "string" }, "fromPropositionId": { "type": "string" }, "toPropositionId": { "type": "string" }, "relationType": { "type": "string" }, "joinWarrantId": { "type": ["string", "null"] }, "assertedForce": { "$ref": "#/$defs/Capability" } },
+      "additionalProperties": false
+    },
+    "Policy": {
+      "type": "object", "required": ["id", "version", "contentHash", "jurisdiction", "active"],
+      "properties": { "id": { "type": "string" }, "version": { "type": "string" }, "contentHash": { "type": "string" }, "jurisdiction": { "type": "string" }, "active": { "type": "boolean" } }, "additionalProperties": false
+    },
+    "Warrant": {
+      "type": "object", "required": ["id", "policyId", "policyVersion", "policyContentHash", "jurisdiction", "appliesToTarget", "authorizesDimensions", "maxForce", "issuedAt", "expiresAt", "revoked", "issuerId", "statement"],
+      "properties": {
+        "id": { "type": "string" }, "policyId": { "type": "string" }, "policyVersion": { "type": "string" }, "policyContentHash": { "type": "string" },
+        "jurisdiction": { "type": "string" }, "appliesToTarget": { "type": "string" }, "authorizesDimensions": { "type": "array", "items": { "$ref": "#/$defs/Dimension" } },
+        "maxForce": { "$ref": "#/$defs/Capability" }, "issuedAt": { "type": "string" }, "expiresAt": { "type": ["string", "null"] }, "revoked": { "type": "boolean" }, "issuerId": { "type": "string" }, "statement": { "type": "string" }
+      }, "additionalProperties": false
+    },
+    "AuthorityGrant": {
+      "type": "object", "required": ["id", "actorId", "permittedOperations", "jurisdiction", "grantedAt", "expiresAt", "revoked"],
+      "properties": { "id": { "type": "string" }, "actorId": { "type": "string" }, "permittedOperations": { "type": "array", "items": { "$ref": "#/$defs/Capability" } }, "jurisdiction": { "type": "string" }, "grantedAt": { "type": "string" }, "expiresAt": { "type": ["string", "null"] }, "revoked": { "type": "boolean" } }, "additionalProperties": false
+    },
+    "TypedDiff": {
+      "type": "object", "required": ["dimension", "changeKind", "from", "to", "material", "citedWarrantId", "description"],
+      "properties": { "dimension": { "$ref": "#/$defs/Dimension" }, "changeKind": { "enum": ["ADD", "REMOVE", "REPLACE", "WIDEN", "NARROW", "UNCHANGED"] }, "from": {}, "to": {}, "material": { "type": "boolean" }, "citedWarrantId": { "type": ["string", "null"] }, "description": { "type": "string" } }, "additionalProperties": false
+    },
+    "AuthorityTransition": {
+      "type": "object", "required": ["id", "objectId", "fromStanding", "toStanding", "diffs", "citedWarrantIds", "proposedAt", "proposedByActorId"],
+      "properties": { "id": { "type": "string" }, "objectId": { "type": "string" }, "fromStanding": { "$ref": "#/$defs/Standing" }, "toStanding": { "$ref": "#/$defs/Standing" }, "diffs": { "type": "array", "items": { "$ref": "#/$defs/TypedDiff" } }, "citedWarrantIds": { "type": "array", "items": { "type": "string" } }, "proposedAt": { "type": "string" }, "proposedByActorId": { "type": "string" } }, "additionalProperties": false
+    },
+    "ForceRequest": {
+      "type": "object", "required": ["id", "actorId", "requestedForce", "againstTarget", "inJurisdiction", "atTime", "purpose"],
+      "properties": { "id": { "type": "string" }, "actorId": { "type": "string" }, "requestedForce": { "$ref": "#/$defs/Capability" }, "againstTarget": { "type": "string" }, "inJurisdiction": { "type": "string" }, "atTime": { "type": "string" }, "purpose": { "type": "string" } }, "additionalProperties": false
+    },
+    "DomainGateResult": {
+      "type": "object", "required": ["id", "gateName", "passed", "detail", "evaluatedAt"],
+      "properties": { "id": { "type": "string" }, "gateName": { "type": "string" }, "passed": { "type": "boolean" }, "detail": { "type": "string" }, "evaluatedAt": { "type": "string" } }, "additionalProperties": false
+    }
+  }
+}
