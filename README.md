@@ -63,6 +63,6 @@ Source/release identity: [`SOURCE_IDENTITY.md`](SOURCE_IDENTITY.md)
 
 ## Issuance status
 
-The public WHP key registry is currently empty. Until an active WHP verification key is published there and the private runtime is separately provisioned and verified, **no newly presented signed result is entitled to official WHP DIP standing**.
+WHP verification key `whp-dip-ed25519-8214a0fd67bb70fe` is active in the public key registry for receipts issued on or after `2026-09-09T12:26:26Z`. A result is official only if it satisfies the official-result contract, verifies under the published active key, and identifies the canonical RC1 release and governing public terms version.
 
 This repository does not publish the evaluator implementation and does not itself issue a WHP Standing Mark, legal certification, safety certification, or universal truth verdict.
