@@ -75,7 +75,7 @@ The public registry contains only public verification keys. The signing private 
 
 ## Current issuance state
 
-The public registry is intentionally empty until the private signing runtime is provisioned and verified. Therefore, at the current state of this repository, **no newly presented signed result should be represented as an official WHP DIP result**.
+WHP key `whp-dip-ed25519-8214a0fd67bb70fe` is active for receipts issued on or after `2026-09-09T12:26:26Z`. The active-key registry determines signing authority; service availability is an operational state and does not alter the meaning of signatures already issued while the key was active.
 
 ## What verification establishes
 
