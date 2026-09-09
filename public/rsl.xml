@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsl xmlns="https://rslstandard.org/rsl">
+  <content url="/api/evaluate">
+    <license>
+      <permits type="usage">ai-input</permits>
+      <payment type="use">
+        <amount currency="USD">0.001</amount>
+        <accepts type="application/x402+json"><![CDATA[
+          {
+            "scheme": "exact",
+            "network": "eip155:84532",
+            "resource": "/api/evaluate",
+            "environment": "testnet"
+          }
+        ]]></accepts>
+      </payment>
+    </license>
+    <copyright type="person">Wheeler Hubbell</copyright>
+    <schema>/dip-v1.schema.json</schema>
+  </content>
+</rsl>
