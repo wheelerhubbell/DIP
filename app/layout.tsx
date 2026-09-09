@@ -1,0 +1,12 @@
+export const metadata = {
+  title: "WHP Decision Integrity Protocol — x402",
+  description: "Machine-payable deterministic Decision Integrity Protocol evaluation.",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body style={{ margin: 0 }}>{children}</body>
+    </html>
+  );
+}
