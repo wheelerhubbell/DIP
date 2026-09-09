@@ -1,0 +1,8 @@
+{
+  "registryVersion": "WHP-DIP-KEYS-v1",
+  "issuer": "Wheeler Hubbell Publishing, Inc.",
+  "protocol": "Decision Integrity Protocol",
+  "status": "NOT_YET_ISSUING_OFFICIAL_SIGNED_RESULTS",
+  "keys": [],
+  "note": "An official signed WHP DIP result requires a keyId matching an active key published in this registry. An empty registry means no signed result is presently entitled to official WHP standing. Private signing keys are never published here."
+}
