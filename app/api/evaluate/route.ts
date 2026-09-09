@@ -10,6 +10,7 @@ const handler = async (request: NextRequest) => {
   try {
     const input = await request.json();
     const result = evaluate(input);
+    const licenseUrl = new URL("/rsl.xml", request.url).toString();
 
     return NextResponse.json(
       {
@@ -22,7 +23,7 @@ const handler = async (request: NextRequest) => {
       {
         status: 200,
         headers: {
-          Link: '</rsl.xml>; rel="license"; type="application/rsl+xml"',
+          Link: `<${licenseUrl}>; rel="license"; type="application/rsl+xml"`,
           "X-WHP-DIP-Release": "1.0.0-rc.1",
           "X-WHP-DIP-SHA256":
             "6a73d326d071c8c297609b74a55f4bf6328012ff446ac83cc58fb9a6374c6263",
@@ -72,4 +73,4 @@ const routes = {
   },
 };
 
-export const POST = withX402(handler, routes, paymentServer);
+export const POST = withX402(handler, routes as any, paymentServer);
