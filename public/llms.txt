@@ -9,6 +9,8 @@
 
 ## Start here
 
+- [Browser access and local receipt verification](https://decision-integrity.wheelerhubbell.chatgpt.site/dip): Use cases, on-device verification, and copyable agent instructions. No payment initiated by the page.
+
 - [Live service access](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/SERVICE_ACCESS.md): POST endpoint, price, example request, x402 instructions, and paid-path verification status.
 - [Service descriptor](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json): Machine-readable endpoint and advertised payment requirements.
 - [OpenAPI](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/openapi.json): API description for callers and importers.
