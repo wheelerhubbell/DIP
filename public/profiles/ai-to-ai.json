@@ -1,0 +1,14 @@
+{
+  "profileVersion": "WHP-DIP-DISCOVERY-PROFILE-v1",
+  "name": "Decision Integrity Protocol for AI-to-AI Actions",
+  "shortName": "DIP for AI-to-AI",
+  "description": "Evaluate the standing and asserted authority behind one automated agent's requested consequential action before another system gives that request external force.",
+  "useWhen": ["one agent requests action from another", "agent-to-agent request carries delegated authority", "receiving agent needs a verifiable authorization decision"],
+  "canonicalProtocol": "Decision Integrity Protocol",
+  "endpoint": "https://whp-dip-x402.vercel.app/api/evaluate",
+  "method": "POST",
+  "inputSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
+  "resultSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json",
+  "serviceDescriptor": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json",
+  "canonicalRelease": "1.0.0-rc.1"
+}
