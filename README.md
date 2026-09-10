@@ -8,6 +8,14 @@
 
 This repository is the public protocol and verification surface maintained by Wheeler Hubbell Publishing, Inc. It is not the private evaluator repository.
 
+## One protocol, multiple entry points
+
+DIP can be discovered and used through domain-specific profiles for AI agents, autonomous payments, MCP, APIs, approval workflows, delegated authority, AI-to-AI actions, enterprise automation, and bots. These are semantic and integration surfaces into **one canonical DIP**, not separate protocols.
+
+**[DIP Profiles](PROFILES.md)** defines the profile invariant, layer boundaries, shorthand (`DIP/AGENT`, `DIP/PAY`, `DIP/MCP`, `DIP/API`, `DIP/WF`, `DIP/A2A`, `DIP/ENT`, `DIP/BOT`), and canonicalization rule.
+
+Machine-readable profile discovery: [`public/profiles/index.json`](public/profiles/index.json).
+
 ## Call the live service
 
 **[Service access and agent instructions](SERVICE_ACCESS.md)** — endpoint, complete request example, x402 payment flow, and result verification.
@@ -47,6 +55,7 @@ Public here:
 - DIP's public promise and governing contract;
 - input and result schemas;
 - bounded examples;
+- domain profiles and discovery surfaces;
 - public terms and limits;
 - release identity and digest;
 - WHP public verification-key registry;
