@@ -1,5 +1,7 @@
 # DIP receipt propagation
 
+A recipient can open [Use DIP](https://decision-integrity.wheelerhubbell.chatgpt.site/dip) to verify the original receipt on their own device and start a new use. The browser downloads WHP’s public keys independently; it does not upload the receipt or initiate payment. The Node companion verifier also checks the companion’s full-file checksum.
+
 The receipt companion gives a result's next reader a route back to WHP verification and the DIP service. It travels with the original receipt through a caller's chosen report, attachment, or agent handoff.
 
 ## Implemented public tools
@@ -37,7 +39,9 @@ if (receiptPackage) {
 const resultOrError = await response.text();
 ```
 
-The helper makes one call through the supplied client to the existing DIP endpoint. The supplied x402 client owns payment handling and any protocol retry. Once a recognizable successful receipt arrives, the helper constructs its companion automatically. It performs no additional evaluation, payment, upload, tracking, or forwarding.
+Before calling the supplied payment client, the helper automatically validates the request against the bundled [evaluation input schema](public/evaluation-input.schema.json). Invalid input rejects locally with `code: "DIP_INPUT_INVALID"`, a JSON-pointer `path`, and a `reason`; no request or payment authorization is attempted. Validation leaves the input unchanged. It checks structure, not the truth of supplied evidence, hash consistency, or the existence of authority. It does not fill missing fields or grant permissions.
+
+After preflight passes, the helper makes one call through the supplied client to the existing DIP endpoint. The supplied x402 client owns payment handling and any protocol retry. Once a recognizable successful receipt arrives, the helper constructs its companion automatically. It performs no additional evaluation, payment, upload, tracking, or forwarding.
 
 A `402` or other unsuccessful HTTP response returns `receiptPackage: null` and preserves the response. An unexpected successful body also preserves the response, with `packagingError: "RECEIPT_NOT_PACKAGED"`. It does not retry a potentially paid request just because packaging failed.
 
@@ -80,5 +84,5 @@ Tests use synthetic receipts and ephemeral test keys, including a stubbed respon
 Run the public tool tests without installing the site's dependencies:
 
 ```sh
-node --test tools/receipt-companion.test.mjs verify/verify-official-result.test.mjs
+node --test tools/input-preflight.test.mjs tools/receipt-companion.test.mjs verify/verify-official-result.test.mjs
 ```
