@@ -1,0 +1,196 @@
+{
+  "source": {
+    "id": "source:integration-example",
+    "label": "Synthetic integration fixture",
+    "locator": "urn:whp:dip:integration-example",
+    "provenance": "Locally constructed example",
+    "jurisdiction": "integration-test",
+    "admitted": true,
+    "admissionNote": "Admitted as a synthetic test fixture only."
+  },
+  "object": {
+    "id": "object:integration-example",
+    "sourceRecordId": "source:integration-example",
+    "exactContent": "Synthetic integration fixture: this example carries no real-world execution authority.",
+    "contentHash": "32e35d70a955d166b3370a39bf6b71f2c43cceb3d5682ca285972aa8f5e0d96b",
+    "standing": {
+      "P": "synthetic fixture",
+      "E": "DECLARED_EXAMPLE",
+      "A": "INFORMATIONAL",
+      "O": [
+        "INFORM"
+      ],
+      "Q": {
+        "scope": "synthetic integration test only",
+        "conditions": [
+          "No real-world execution"
+        ],
+        "modality": "example",
+        "attribution": "WHP integration test fixture",
+        "uncertainty": "Synthetic data, not evidence about a real person or event"
+      },
+      "T": {
+        "validFrom": "2026-09-10T00:00:00Z",
+        "validUntil": null,
+        "observedAt": "2026-09-10T00:00:00Z"
+      },
+      "V": {
+        "version": "1",
+        "supersedes": null,
+        "supersededBy": null,
+        "corrections": []
+      },
+      "J": {
+        "target": "example:fixture",
+        "jurisdiction": "integration-test",
+        "domain": "synthetic-example"
+      }
+    },
+    "registeredAt": "2026-09-10T00:00:00Z"
+  },
+  "proposition": {
+    "id": "proposition:integration-example",
+    "objectId": "object:integration-example",
+    "statedText": "Synthetic integration fixture: this example carries no real-world execution authority.",
+    "carriedQualifiers": {
+      "scope": "synthetic integration test only",
+      "conditions": [
+        "No real-world execution"
+      ],
+      "modality": "example",
+      "attribution": "WHP integration test fixture",
+      "uncertainty": "Synthetic data, not evidence about a real person or event"
+    },
+    "totalizes": false,
+    "standing": {
+      "P": "synthetic fixture",
+      "E": "DECLARED_EXAMPLE",
+      "A": "INFORMATIONAL",
+      "O": [
+        "INFORM"
+      ],
+      "Q": {
+        "scope": "synthetic integration test only",
+        "conditions": [
+          "No real-world execution"
+        ],
+        "modality": "example",
+        "attribution": "WHP integration test fixture",
+        "uncertainty": "Synthetic data, not evidence about a real person or event"
+      },
+      "T": {
+        "validFrom": "2026-09-10T00:00:00Z",
+        "validUntil": null,
+        "observedAt": "2026-09-10T00:00:00Z"
+      },
+      "V": {
+        "version": "1",
+        "supersedes": null,
+        "supersededBy": null,
+        "corrections": []
+      },
+      "J": {
+        "target": "example:fixture",
+        "jurisdiction": "integration-test",
+        "domain": "synthetic-example"
+      }
+    }
+  },
+  "relations": [],
+  "transition": {
+    "id": "transition:integration-example",
+    "objectId": "object:integration-example",
+    "fromStanding": {
+      "P": "synthetic fixture",
+      "E": "DECLARED_EXAMPLE",
+      "A": "INFORMATIONAL",
+      "O": [
+        "INFORM"
+      ],
+      "Q": {
+        "scope": "synthetic integration test only",
+        "conditions": [
+          "No real-world execution"
+        ],
+        "modality": "example",
+        "attribution": "WHP integration test fixture",
+        "uncertainty": "Synthetic data, not evidence about a real person or event"
+      },
+      "T": {
+        "validFrom": "2026-09-10T00:00:00Z",
+        "validUntil": null,
+        "observedAt": "2026-09-10T00:00:00Z"
+      },
+      "V": {
+        "version": "1",
+        "supersedes": null,
+        "supersededBy": null,
+        "corrections": []
+      },
+      "J": {
+        "target": "example:fixture",
+        "jurisdiction": "integration-test",
+        "domain": "synthetic-example"
+      }
+    },
+    "toStanding": {
+      "P": "synthetic fixture",
+      "E": "DECLARED_EXAMPLE",
+      "A": "INFORMATIONAL",
+      "O": [
+        "INFORM"
+      ],
+      "Q": {
+        "scope": "synthetic integration test only",
+        "conditions": [
+          "No real-world execution"
+        ],
+        "modality": "example",
+        "attribution": "WHP integration test fixture",
+        "uncertainty": "Synthetic data, not evidence about a real person or event"
+      },
+      "T": {
+        "validFrom": "2026-09-10T00:00:00Z",
+        "validUntil": null,
+        "observedAt": "2026-09-10T00:00:00Z"
+      },
+      "V": {
+        "version": "1",
+        "supersedes": null,
+        "supersededBy": null,
+        "corrections": []
+      },
+      "J": {
+        "target": "example:fixture",
+        "jurisdiction": "integration-test",
+        "domain": "synthetic-example"
+      }
+    },
+    "diffs": [],
+    "citedWarrantIds": [],
+    "proposedAt": "2026-09-10T00:00:00Z",
+    "proposedByActorId": "actor:integration-example"
+  },
+  "warrants": [],
+  "policies": [],
+  "forceRequest": {
+    "id": "request:integration-example",
+    "actorId": "actor:integration-example",
+    "requestedForce": "INFORM",
+    "againstTarget": "example:fixture",
+    "inJurisdiction": "integration-test",
+    "atTime": "2026-09-10T00:00:00Z",
+    "purpose": "Check an unchanged synthetic informational state; no execution."
+  },
+  "authorityGrant": {
+    "id": "grant:integration-example",
+    "actorId": "actor:integration-example",
+    "permittedOperations": [
+      "INFORM"
+    ],
+    "jurisdiction": "integration-test",
+    "grantedAt": "2026-09-10T00:00:00Z",
+    "expiresAt": null,
+    "revoked": false
+  }
+}
