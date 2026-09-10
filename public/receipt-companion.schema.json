@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/receipt-companion.schema.json",
+  "title": "WHP DIP Receipt Companion v1",
+  "description": "Unsigned discovery companion carried beside an unchanged official-result envelope. Packaging is not signature verification. URLs are fixed WHP discovery hints; use independently trusted keys.",
+  "type": "object",
+  "required": [
+    "companionVersion",
+    "serviceName",
+    "receipt",
+    "discovery",
+    "verificationStatus",
+    "sharing"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "companionVersion": {
+      "const": "WHP-DIP-RECEIPT-COMPANION-v1"
+    },
+    "serviceName": {
+      "const": "WHP Decision Integrity Protocol"
+    },
+    "receipt": {
+      "type": "object",
+      "required": [
+        "filename",
+        "sha256",
+        "receiptId",
+        "resultId",
+        "release",
+        "keyId"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "const": "official-result.json"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "receiptId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resultId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release": {
+          "const": "1.0.0-rc.1"
+        },
+        "keyId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "discovery": {
+      "type": "object",
+      "required": [
+        "serviceDescriptor",
+        "serviceAccess",
+        "verificationInstructions",
+        "publicKeyRegistry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "serviceDescriptor": {
+          "const": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json"
+        },
+        "serviceAccess": {
+          "const": "https://github.com/wheelerhubbell/DIP/blob/main/SERVICE_ACCESS.md"
+        },
+        "verificationInstructions": {
+          "const": "https://github.com/wheelerhubbell/DIP/blob/main/OFFICIAL_RESULT_VERIFICATION.md"
+        },
+        "publicKeyRegistry": {
+          "const": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/.well-known/whp-dip-keys.json"
+        }
+      }
+    },
+    "verificationStatus": {
+      "const": "NOT_PERFORMED"
+    },
+    "sharing": {
+      "const": "LOCAL_ONLY_UNTIL_CALLER_CHOOSES_TO_SHARE"
+    }
+  }
+}
