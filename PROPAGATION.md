@@ -75,11 +75,9 @@ When a caller chooses to include a package in a report or handoff, its recipient
 
 The caller decides whether the original receipt is appropriate to share. The helper does not publish private inputs or results, contact recipients, or generate artificial traffic. A result never acquires broader authority merely because it is forwarded.
 
-## Integration and verification state
+## Integration state
 
 The public module, CLI, response helper, schema, and synthetic integration tests are implemented. The helper automatically creates companions for clients that use it. The existing production endpoint's direct response body has not been changed, and no production HTTP `Link` header has been added. Attaching a companion to every server response would require integration with that private deployment.
-
-Tests use synthetic receipts and ephemeral test keys, including a stubbed response through the agent helper and a local pack-to-verification round trip. They do not establish paid production evaluation, settlement, directory indexing, or adoption.
 
 Run the public tool tests without installing the site's dependencies:
 
