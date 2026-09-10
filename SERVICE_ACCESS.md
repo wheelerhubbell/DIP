@@ -60,6 +60,10 @@ The [official-result schema](public/official-result.schema.json) and [verificati
 
 Validate the returned envelope and signature before treating a result as WHP-issued. The protocol vocabulary is `AUTHORIZED`, `BOUNDED`, `AWAITING_AUTHORITY`, and `DENIED`; the RC1 evaluation path may produce a narrower subset. Payment does not guarantee a favorable outcome. A result is not, by itself, a WHP Standing Mark or authority to execute an external action.
 
+## Carry the result forward
+
+Use [the public receipt companion helper](PROPAGATION.md) to retain the returned receipt unchanged and attach a machine-readable route to verification and a new DIP evaluation. Its `createDipClient(fetchWithPayment)` integration packages successful receipts automatically for participating clients; it preserves error responses and does not retry paid calls on packaging failure. Direct production response bodies remain unchanged.
+
 ## Current verification status
 
 As of the access check above, the service was reachable and its unpaid payment challenge advertised the terms shown here. **End-to-end paid evaluation and settlement to WHP have not yet been verified.** The public result schema is the published contract; this access check did not establish that production returns a conforming result after payment.
