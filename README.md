@@ -16,6 +16,10 @@ The live payment challenge advertises **1 USDC on Base mainnet**. The endpoint a
 
 Machine-readable: [service descriptor](public/service.json) · [OpenAPI](public/openapi.json) · [agent reading index](public/llms.txt).
 
+## Carry a result into its next use
+
+[Receipt propagation tools](PROPAGATION.md) package an unchanged receipt with verification and service-discovery links. The public agent helper creates this companion automatically when its caller receives a recognizable successful result. Local packaging and verification make no payment or network request.
+
 ## Four questions this repository answers
 
 ### What does DIP do?
