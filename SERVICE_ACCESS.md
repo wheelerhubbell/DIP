@@ -1,5 +1,7 @@
 # Use the WHP Decision Integrity Protocol service
 
+For a phone-friendly starting point, open [Use DIP](https://decision-integrity.wheelerhubbell.chatgpt.site/dip). It explains suitable transitions, verifies an existing receipt locally, and supplies copyable agent instructions. This page does not execute a paid evaluation.
+
 Wheeler Hubbell Publishing, Inc. operates the public DIP evaluation endpoint at:
 
 **POST https://whp-dip-x402.vercel.app/api/evaluate**
@@ -28,6 +30,8 @@ Use the complete [evaluation input schema](public/evaluation-input.schema.json),
 The request identifies the source, exact object and standing, proposition and qualifiers, proposed transition, supporting warrants and policies, requested force, and actor's authority grant. The schema specifies required fields and allowed values.
 
 A complete [synthetic INFORM request](public/examples/inform.json) is provided as a formatting and integration example. It contains no real person, event, customer record, or operational authority. It has passed local schema validation and the retained RC1 evaluator's informational path; it has **not** been verified through a paid production call.
+
+The public [`createDipClient(fetchWithPayment)` helper](PROPAGATION.md) automatically checks the complete request against the bundled schema before calling the authorized payment client. Invalid requests fail locally with `code: "DIP_INPUT_INVALID"`, a JSON-pointer `path`, and a `reason`, without a network request or payment attempt. The check does not modify the request, fill missing authority, evaluate evidence, or verify hash contents. Direct HTTP calls do not receive this client-side preflight automatically.
 
 ## Read the payment challenge without paying
 
