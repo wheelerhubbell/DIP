@@ -1,0 +1,18 @@
+# WHP Decision Integrity Protocol
+
+> DIP evaluates a structured proposed transition against supplied standing, authority, warrants, qualifiers, constraints, and requested force.
+
+## Start here
+
+- [Live service access](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/SERVICE_ACCESS.md): POST endpoint, price, example request, x402 instructions, and paid-path verification status.
+- [Service descriptor](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json): Machine-readable endpoint and advertised payment requirements.
+- [OpenAPI](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/openapi.json): API description for callers and importers.
+- [Input schema](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json): Complete structured request contract.
+- [Synthetic request](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/examples/inform.json): Informational fixture; no real-world execution authority.
+- [Result schema](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json): Published official-result contract.
+- [Verification](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/OFFICIAL_RESULT_VERIFICATION.md): Verify the returned result's signature.
+- [Public key registry](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/.well-known/whp-dip-keys.json): WHP public verification keys.
+- [Protocol](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/PROTOCOL.md): Evaluation scope and limitations.
+- [Public terms](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/PUBLIC_TERMS.md): Governing public terms.
+
+The endpoint is POST https://whp-dip-x402.vercel.app/api/evaluate. The payment challenge checked on 2026-09-10 advertised 1 USDC on Base mainnet via x402 v2. Paid evaluation and settlement have not yet been verified. These discovery files live in the public repository; no third-party directory listing is claimed.
