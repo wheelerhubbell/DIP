@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:receipts": "node --test tools/receipt-companion.test.mjs verify/verify-official-result.test.mjs"
+    "test:receipts": "node --test tools/input-preflight.test.mjs tools/receipt-companion.test.mjs verify/verify-official-result.test.mjs"
   },
   "dependencies": {
     "next": "latest",
