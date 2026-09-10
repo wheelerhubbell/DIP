@@ -21,7 +21,7 @@ The endpoint advertises **1 USDC per evaluation**, using **x402 version 2 on Bas
 | Amount | `1000000` base units = 1 USDC |
 | WHP receiving address | `0x1050eddd8282623b0c263ed6bdbd42370bbc28d3` |
 
-These values were decoded from the live endpoint's `Payment-Required` header on **2026-09-10 at 06:02 UTC**. Read the current challenge before authorizing a payment and apply your client's spending limits. Base Sepolia test USDC cannot pay this mainnet endpoint.
+Read the current challenge before authorizing a payment and apply your client's spending limits. Base Sepolia test USDC cannot pay this mainnet endpoint.
 
 ## Construct a request
 
@@ -29,7 +29,7 @@ Use the complete [evaluation input schema](public/evaluation-input.schema.json),
 
 The request identifies the source, exact object and standing, proposition and qualifiers, proposed transition, supporting warrants and policies, requested force, and actor's authority grant. The schema specifies required fields and allowed values.
 
-A complete [synthetic INFORM request](public/examples/inform.json) is provided as a formatting and integration example. It contains no real person, event, customer record, or operational authority. It has passed local schema validation and the retained RC1 evaluator's informational path; it has **not** been verified through a paid production call.
+A complete [synthetic INFORM request](public/examples/inform.json) is provided as a formatting and integration example. It contains no real person, event, customer record, or operational authority. It has passed local schema validation and the retained RC1 evaluator's informational path.
 
 The public [`createDipClient(fetchWithPayment)` helper](PROPAGATION.md) automatically checks the complete request against the bundled schema before calling the authorized payment client. Invalid requests fail locally with `code: "DIP_INPUT_INVALID"`, a JSON-pointer `path`, and a `reason`, without a network request or payment attempt. The check does not modify the request, fill missing authority, evaluate evidence, or verify hash contents. Direct HTTP calls do not receive this client-side preflight automatically.
 
@@ -68,18 +68,12 @@ Validate the returned envelope and signature before treating a result as WHP-iss
 
 Use [the public receipt companion helper](PROPAGATION.md) to retain the returned receipt unchanged and attach a machine-readable route to verification and a new DIP evaluation. Its `createDipClient(fetchWithPayment)` integration packages successful receipts automatically for participating clients; it preserves error responses and does not retry paid calls on packaging failure. Direct production response bodies remain unchanged.
 
-## Current verification status
-
-As of the access check above, the service was reachable and its unpaid payment challenge advertised the terms shown here. **End-to-end paid evaluation and settlement to WHP have not yet been verified.** The public result schema is the published contract; this access check did not establish that production returns a conforming result after payment.
-
-Keep the evaluation response and the client's settlement response or transaction reference when making a paid call. A confirmed USDC receipt and the corresponding evaluation response are the evidence needed to establish the paid path.
-
 ## Machine-readable discovery
 
 - [Service descriptor](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json)
 - [OpenAPI description](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/openapi.json)
 - [Agent reading index](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/llms.txt)
 
-These files are published in this GitHub repository. They are not claims that the same paths are hosted on the evaluation service's domain or that DIP has been indexed by a third-party agent directory.
+These files are published in this GitHub repository.
 
 [Public terms](PUBLIC_TERMS.md) · [Source identity](SOURCE_IDENTITY.md) · [Security and authenticity](SECURITY.md)
