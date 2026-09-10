@@ -6,6 +6,16 @@
 
 This repository is the public protocol and verification surface maintained by Wheeler Hubbell Publishing, Inc. It is not the private evaluator repository.
 
+## Call the live service
+
+**[Service access and agent instructions](SERVICE_ACCESS.md)** — endpoint, complete request example, x402 payment flow, and result verification.
+
+`POST https://whp-dip-x402.vercel.app/api/evaluate`
+
+The live payment challenge advertises **1 USDC on Base mainnet**. The endpoint and unpaid challenge were checked on September 10, 2026; **paid evaluation and settlement to WHP remain unverified**.
+
+Machine-readable: [service descriptor](public/service.json) · [OpenAPI](public/openapi.json) · [agent reading index](public/llms.txt).
+
 ## Four questions this repository answers
 
 ### What does DIP do?
