@@ -1,5 +1,7 @@
 # Decision Integrity Protocol (DIP)
 
+**[Use DIP in your browser](https://decision-integrity.wheelerhubbell.chatgpt.site/dip)** — illustrative use cases, free receipt verification on your device, and copyable agent instructions.
+
 **DIP is a decision-integrity protocol for evaluating whether a proposed action is authorized under defined standing, authority, warrants, constraints, and requested force. It returns a verifiable decision receipt.**
 
 **DIP does not grant authority. It evaluates whether asserted authority supports a specific proposed transition.**
