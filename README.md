@@ -14,7 +14,7 @@ This repository is the public protocol and verification surface maintained by Wh
 
 `POST https://whp-dip-x402.vercel.app/api/evaluate`
 
-The live payment challenge advertises **1 USDC on Base mainnet**. The endpoint and unpaid challenge were checked on September 10, 2026; **paid evaluation and settlement to WHP remain unverified**.
+The live payment challenge advertises **1 USDC on Base mainnet**.
 
 Machine-readable: [service descriptor](public/service.json) · [OpenAPI](public/openapi.json) · [agent reading index](public/llms.txt).
 
