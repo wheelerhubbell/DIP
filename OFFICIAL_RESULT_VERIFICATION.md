@@ -1,5 +1,7 @@
 # Verifying an Official WHP DIP Result
 
+**[Verify in your browser](https://decision-integrity.wheelerhubbell.chatgpt.site/dip#verify)**: choose or paste the original receipt. Verification runs on your device against the published envelope schema and v1 signature/digest contract, using WHP’s independently downloaded public key registry. It does not upload receipt content or make a payment. It does not check the separate companion file.
+
 An output is not an official WHP result merely because it contains DIP-shaped JSON or names the Decision Integrity Protocol.
 
 For `1.0.0-rc.1`, officiality requires an **official-result envelope**, an intact RC1 result digest, and a valid WHP Ed25519 signature under an active public key published by Wheeler Hubbell Publishing, Inc.
