@@ -3,7 +3,7 @@
   "info": {
     "title": "WHP Decision Integrity Protocol",
     "version": "1.0.0-rc.1",
-    "description": "Public access description for the existing DIP paid evaluation service. The unpaid x402 challenge was observed on 2026-09-10; paid evaluation and settlement remain unverified. The successful result schema describes the published contract."
+    "description": "Public access description for the DIP paid evaluation service. The successful result schema describes the published contract."
   },
   "servers": [
     {
@@ -11,7 +11,7 @@
     }
   ],
   "externalDocs": {
-    "description": "Access instructions and verification status",
+    "description": "Access instructions and result verification",
     "url": "https://github.com/wheelerhubbell/DIP/blob/main/SERVICE_ACCESS.md"
   },
   "paths": {
@@ -29,7 +29,7 @@
               },
               "examples": {
                 "syntheticInform": {
-                  "summary": "Synthetic informational example; not a paid-production verification",
+                  "summary": "Synthetic informational example",
                   "externalValue": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/examples/inform.json"
                 }
               }
@@ -38,7 +38,7 @@
         },
         "responses": {
           "200": {
-            "description": "Published success contract: official WHP DIP result envelope. Paid production response not yet verified.",
+            "description": "Official WHP DIP result envelope.",
             "content": {
               "application/json": {
                 "schema": {
@@ -84,14 +84,5 @@
         }
       }
     }
-  },
-  "x-verification": {
-    "checkedAt": "2026-09-10T06:02:00.243960Z",
-    "reachable": true,
-    "unpaidHttpStatus": 402,
-    "paymentTermsSource": "Decoded live Payment-Required header",
-    "paidEvaluation": "NOT_YET_VERIFIED",
-    "settlementToRecipient": "NOT_YET_VERIFIED",
-    "thirdPartyDirectoryListing": "NOT_CONFIRMED"
   }
 }
