@@ -1,0 +1,97 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WHP Decision Integrity Protocol",
+    "version": "1.0.0-rc.1",
+    "description": "Public access description for the existing DIP paid evaluation service. The unpaid x402 challenge was observed on 2026-09-10; paid evaluation and settlement remain unverified. The successful result schema describes the published contract."
+  },
+  "servers": [
+    {
+      "url": "https://whp-dip-x402.vercel.app"
+    }
+  ],
+  "externalDocs": {
+    "description": "Access instructions and verification status",
+    "url": "https://github.com/wheelerhubbell/DIP/blob/main/SERVICE_ACCESS.md"
+  },
+  "paths": {
+    "/api/evaluate": {
+      "post": {
+        "operationId": "evaluateDipTransition",
+        "summary": "Evaluate a structured proposed transition under supplied standing and authority",
+        "description": "Requires x402 v2 exact payment on Base mainnet. The published result contract is an official WHP-signed result envelope. An unpaid 402 response is not an evaluation result.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json"
+              },
+              "examples": {
+                "syntheticInform": {
+                  "summary": "Synthetic informational example; not a paid-production verification",
+                  "externalValue": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/examples/inform.json"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Published success contract: official WHP DIP result envelope. Paid production response not yet verified.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required. Decode the base64 JSON Payment-Required header.",
+            "headers": {
+              "Payment-Required": {
+                "description": "Base64-encoded x402 v2 payment requirements",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "HTTP error or unexpected response. Treat as unsuccessful unless evaluation and payment evidence establish otherwise."
+          }
+        },
+        "x-payment": {
+          "protocol": "x402",
+          "version": 2,
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "amount": "1000000",
+          "decimals": 6,
+          "currency": "USDC",
+          "payTo": "0x1050eddd8282623b0c263ed6bdbd42370bbc28d3",
+          "requirementHeader": "Payment-Required",
+          "note": "Read current requirements before authorizing payment; a direct wallet transfer does not execute an evaluation."
+        }
+      }
+    }
+  },
+  "x-verification": {
+    "checkedAt": "2026-09-10T06:02:00.243960Z",
+    "reachable": true,
+    "unpaidHttpStatus": 402,
+    "paymentTermsSource": "Decoded live Payment-Required header",
+    "paidEvaluation": "NOT_YET_VERIFIED",
+    "settlementToRecipient": "NOT_YET_VERIFIED",
+    "thirdPartyDirectoryListing": "NOT_CONFIRMED"
+  }
+}
