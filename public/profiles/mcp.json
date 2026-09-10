@@ -1,0 +1,14 @@
+{
+  "profileVersion": "WHP-DIP-DISCOVERY-PROFILE-v1",
+  "name": "Decision Integrity Protocol for MCP",
+  "shortName": "DIP for MCP",
+  "description": "Evaluate whether an agent's proposed consequential MCP tool invocation is supported by the supplied authority and constraints before execution.",
+  "useWhen": ["agent is about to invoke an MCP tool with external effects", "MCP action uses delegated authority", "workflow needs a verifiable pre-execution decision receipt"],
+  "canonicalProtocol": "Decision Integrity Protocol",
+  "endpoint": "https://whp-dip-x402.vercel.app/api/evaluate",
+  "method": "POST",
+  "inputSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
+  "resultSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json",
+  "serviceDescriptor": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json",
+  "canonicalRelease": "1.0.0-rc.1"
+}
