@@ -1,0 +1,14 @@
+{
+  "profileVersion": "WHP-DIP-DISCOVERY-PROFILE-v1",
+  "name": "Decision Integrity Protocol for Delegated Authority",
+  "shortName": "DIP for Delegated Authority",
+  "description": "Evaluate whether a delegated grant of authority supports a particular proposed transition at the force requested.",
+  "useWhen": ["one actor acts for another", "authority is delegated with conditions", "system must distinguish possession of a grant from authority for the exact action"],
+  "canonicalProtocol": "Decision Integrity Protocol",
+  "endpoint": "https://whp-dip-x402.vercel.app/api/evaluate",
+  "method": "POST",
+  "inputSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
+  "resultSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json",
+  "serviceDescriptor": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json",
+  "canonicalRelease": "1.0.0-rc.1"
+}
