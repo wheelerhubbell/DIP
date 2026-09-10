@@ -5,6 +5,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { verifyOfficialResult } from "../verify/verify-official-result.mjs";
+import { validateDipInput } from "./input-preflight.mjs";
 
 export const SERVICE_ENDPOINT = "https://whp-dip-x402.vercel.app/api/evaluate";
 export const COMPANION_VERSION = "WHP-DIP-RECEIPT-COMPANION-v1";
@@ -68,6 +69,8 @@ export function createReceiptPackage(receiptBytes) {
 This package preserves the supplied receipt in official-result.json byte for byte.
 It is not verified merely because it has been packaged. The companion is unsigned.
 
+[Open DIP and verify this receipt on your device](https://decision-integrity.wheelerhubbell.chatgpt.site/dip#verify)
+
 [Verify the WHP receipt](${DISCOVERY.verificationInstructions})
 
 [Use DIP for your own question](${DISCOVERY.serviceAccess})
@@ -118,7 +121,7 @@ export async function packageDipResponse(response) {
 export function createDipClient(authorizedFetch) {
   requireValue(typeof authorizedFetch === "function", "Supply your authorized fetch client");
   return async function evaluate(input) {
-    requireValue(isObject(input), "Supply a structured DIP request");
+    validateDipInput(input);
     const response = await authorizedFetch(SERVICE_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
