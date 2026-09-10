@@ -42,7 +42,7 @@ The computed hexadecimal SHA-256 must equal all of:
 
 The envelope's `inputDigest` must equal `envelope.result.auditTrace.inputDigest`.
 
-These checks establish that the public result body has not been substituted relative to the signed digest fields. They do not reproduce the private evaluator.
+These checks authenticate the digest of `resultClass`, `halts`, and `grantedForce` under the receipt signature. They do not authenticate every other nested result-body field or reproduce the private evaluator. Validate the complete envelope against its schema separately.
 
 ## Signature statement
 
@@ -67,11 +67,11 @@ Verify `signature.value` as a base64-encoded Ed25519 signature over those exact 
 
 Retrieve the WHP key registry at:
 
-`/.well-known/whp-dip-keys.json`
+[the established WHP public repository](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/.well-known/whp-dip-keys.json). Download the registry independently; a key file supplied by a receipt sender is not automatically trusted.
 
 The envelope's `keyId` must match a key whose status is active for the envelope's `issuedAt`. A key absent from the WHP registry has no authority to establish an official WHP result.
 
-The public registry contains only public verification keys. The signing private key remains in the private runtime.
+The public registry contains only public verification keys. The verifier accepts the registry's `publicKeySpkiBase64` as DER-encoded SPKI and also accepts `publicKeyPem` for compatible registries. The signing private key remains in the private runtime.
 
 ## Current issuance state
 
@@ -83,8 +83,10 @@ Successful verification establishes that:
 
 - the identified result is bound to the stated RC1 release;
 - the receipt identifies the public terms version governing that issuance;
-- the public portion of the result is intact relative to its RC1 result digest;
+- the fields covered by the RC1 result digest are intact relative to that signed digest;
 - the identified WHP signing key signed the exact receipt statement; and
 - that key had published WHP authority under the key registry.
 
-It does not independently rerun the private evaluator, establish universal truth, or convert the result into a legal, safety, security, or Standing Mark certification.
+A signed release identity is an issuer statement; it does not independently prove which code production executed. Verification does not independently rerun the private evaluator, establish universal truth, or convert the result into a legal, safety, security, or Standing Mark certification.
+
+To carry a result with a discoverable path back to WHP, use [the receipt companion](PROPAGATION.md). It preserves the signed envelope unchanged and keeps discovery metadata separate.
