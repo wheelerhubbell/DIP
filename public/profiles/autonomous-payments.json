@@ -1,0 +1,14 @@
+{
+  "profileVersion": "WHP-DIP-DISCOVERY-PROFILE-v1",
+  "name": "Decision Integrity Protocol for Autonomous Payments",
+  "shortName": "DIP for Autonomous Payments",
+  "description": "Evaluate whether asserted authority and constraints support a proposed autonomous payment before the payment action acquires external force.",
+  "useWhen": ["agent or automated system is about to spend", "payment authority is delegated or bounded", "amount recipient or permitted force must remain within asserted authority"],
+  "canonicalProtocol": "Decision Integrity Protocol",
+  "endpoint": "https://whp-dip-x402.vercel.app/api/evaluate",
+  "method": "POST",
+  "inputSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
+  "resultSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json",
+  "serviceDescriptor": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json",
+  "canonicalRelease": "1.0.0-rc.1"
+}
