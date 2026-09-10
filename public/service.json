@@ -52,5 +52,19 @@
     "serverAutomaticallyAttachesCompanion": false,
     "preservesOriginalReceiptBytes": true,
     "localPackagingAndVerificationRequirePayment": false
+  },
+  "browserAccess": {
+    "url": "https://decision-integrity.wheelerhubbell.chatgpt.site/dip",
+    "receiptVerification": "https://decision-integrity.wheelerhubbell.chatgpt.site/dip#verify",
+    "agentInstructions": "https://decision-integrity.wheelerhubbell.chatgpt.site/dip#agents",
+    "receiptProcessing": "local-on-device",
+    "receiptVerificationRequiresPayment": false,
+    "pageInitiatesPayments": false
+  },
+  "inputPreflight": {
+    "module": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/tools/input-preflight.mjs",
+    "schema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
+    "automaticIn": "createDipClient",
+    "scope": "structural-only-before-authorized-fetch"
   }
 }
