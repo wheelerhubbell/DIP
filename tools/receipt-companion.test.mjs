@@ -116,7 +116,7 @@ test("an unexpected successful body preserves the response and returns a packagi
 
 test("agent client packages a returned receipt automatically with one delegated request", async () => {
   const { bytes } = fixture();
-  const input = { synthetic: "request supplied by caller" };
+  const input = JSON.parse(fs.readFileSync(new URL("../public/examples/inform.json", import.meta.url), "utf8"));
   let calls = 0;
   const evaluate = createDipClient(async (url, init) => {
     calls++;
@@ -129,6 +129,21 @@ test("agent client packages a returned receipt automatically with one delegated 
   assert.equal(calls, 1);
   assert.deepEqual(result.receiptPackage.files["official-result.json"], bytes);
   assert.deepEqual(Buffer.from(await result.response.arrayBuffer()), bytes);
+});
+
+test("malformed input never reaches the authorized payment client", async () => {
+  let calls = 0;
+  const evaluate = createDipClient(async () => {
+    calls++;
+    throw new Error("Invalid input must not reach payment handling");
+  });
+  await assert.rejects(evaluate({}), (error) => error.code === "DIP_INPUT_INVALID" && error.path === "/source");
+  const input = JSON.parse(fs.readFileSync(new URL("../public/examples/inform.json", import.meta.url), "utf8"));
+  input.authorityGrant.permittedOperations.push("ALLOW_EVERYTHING");
+  const before = JSON.stringify(input);
+  await assert.rejects(evaluate(input), (error) => error.code === "DIP_INPUT_INVALID" && error.path === "/authorityGrant/permittedOperations/1");
+  assert.equal(JSON.stringify(input), before);
+  assert.equal(calls, 0);
 });
 
 test("pack and verify require no network or payment client", () => {
