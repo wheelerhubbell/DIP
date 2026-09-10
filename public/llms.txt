@@ -2,6 +2,11 @@
 
 > DIP evaluates a structured proposed transition against supplied standing, authority, warrants, qualifiers, constraints, and requested force.
 
+## Receipt propagation
+
+- [Receipt companion and agent integration](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/PROPAGATION.md): Package an unchanged result with a route to WHP verification and a new evaluation; local and free.
+- [Companion schema](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/receipt-companion.schema.json): Unsigned discovery metadata beside the signed receipt.
+
 ## Start here
 
 - [Live service access](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/SERVICE_ACCESS.md): POST endpoint, price, example request, x402 instructions, and paid-path verification status.
