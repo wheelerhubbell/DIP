@@ -1,0 +1,14 @@
+{
+  "profileVersion": "WHP-DIP-DISCOVERY-PROFILE-v1",
+  "name": "Decision Integrity Protocol for Approval Workflows",
+  "shortName": "DIP for Approval Workflows",
+  "description": "Evaluate whether an approval actually supports the force of a proposed transition without silently expanding the authority that was granted.",
+  "useWhen": ["human approval gates an automated action", "approval scope may differ from requested force", "workflow must preserve qualifiers and authority boundaries"],
+  "canonicalProtocol": "Decision Integrity Protocol",
+  "endpoint": "https://whp-dip-x402.vercel.app/api/evaluate",
+  "method": "POST",
+  "inputSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
+  "resultSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json",
+  "serviceDescriptor": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json",
+  "canonicalRelease": "1.0.0-rc.1"
+}
