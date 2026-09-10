@@ -1,0 +1,17 @@
+{
+  "profileIndexVersion": "WHP-DIP-DISCOVERY-INDEX-v1",
+  "canonicalProtocol": "Decision Integrity Protocol",
+  "principle": "Multiple discovery surfaces, one canonical protocol and evaluation endpoint.",
+  "endpoint": "https://whp-dip-x402.vercel.app/api/evaluate",
+  "profiles": [
+    {"name":"DIP for AI Agents","path":"ai-agents.json","keywords":["AI agent authorization","agent action boundary","agent governance"]},
+    {"name":"DIP for Autonomous Payments","path":"autonomous-payments.json","keywords":["agent payments","autonomous payments","payment authorization"]},
+    {"name":"DIP for Tool Calls","path":"tool-calls.json","keywords":["tool call authorization","pre-execution gate","AI tools"]},
+    {"name":"DIP for MCP","path":"mcp.json","keywords":["MCP authorization","MCP tool calls","Model Context Protocol"]},
+    {"name":"DIP for APIs","path":"apis.json","keywords":["API authorization","API action boundary","consequential API calls"]},
+    {"name":"DIP for Approval Workflows","path":"approval-workflows.json","keywords":["human approval","approval scope","workflow authorization"]},
+    {"name":"DIP for Delegated Authority","path":"delegated-authority.json","keywords":["delegated authority","authorization scope","authority verification"]},
+    {"name":"DIP for AI-to-AI Actions","path":"ai-to-ai.json","keywords":["agent-to-agent","AI-to-AI authorization","multi-agent systems"]},
+    {"name":"DIP for Enterprise Automation","path":"enterprise-automation.json","keywords":["enterprise AI governance","automation authorization","institutional authority"]}
+  ]
+}
