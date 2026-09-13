@@ -1,0 +1,37 @@
+{
+  "name": "Decision Integrity",
+  "description": "Evaluate whether represented evidence and authority warrant a requested action while preserving qualifiers, unknowns, provenance, jurisdiction, and decision boundaries.",
+  "version": "1.0.0",
+  "supportedInterfaces": [
+    {
+      "url": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "organization": "Wheeler Hubbell Publishing, Inc.",
+    "url": "https://decision-integrity-service.wheelerhubbell.chatgpt.site"
+  },
+  "documentationUrl": "https://github.com/wheelerhubbell/DIP/blob/main/AGENTS.md",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "defaultInputModes": ["application/json"],
+  "defaultOutputModes": ["application/json"],
+  "skills": [
+    {
+      "id": "evaluate-decision-integrity",
+      "name": "Evaluate Decision Integrity",
+      "description": "Check whether the represented evidence, warrants, qualifiers, unknowns, provenance, and asserted authority support a requested action.",
+      "tags": ["decision-integrity", "authorization", "provenance", "evidence", "x402"],
+      "examples": [
+        "Does this represented evidence warrant the requested recommendation?",
+        "Is this proposed action within the authority represented in this record?"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"]
+    }
+  ]
+}
