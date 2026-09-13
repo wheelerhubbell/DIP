@@ -1,0 +1,57 @@
+name: Decision Integrity — public stranger verification
+on:
+  push:
+    branches: [decision-integrity-netlify-20260913]
+    paths: [decision-integrity-free-host.verify.json]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore verified source
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
+          import {brotliDecompressSync} from 'node:zlib';
+          import {dirname,resolve,sep} from 'node:path';
+          import {createHash} from 'node:crypto';
+          const bundle=JSON.parse(readFileSync('decision-integrity-free-host.source.json','utf8'));
+          const raw=brotliDecompressSync(Buffer.from(bundle.parts.map(p=>readFileSync(p,'utf8').trim()).join(''),'base64'));
+          if(createHash('sha256').update(raw).digest('hex')!==bundle.sha256)throw Error('Source digest mismatch');
+          const root=resolve('free-host-copy');
+          for(const [path,content] of Object.entries(JSON.parse(raw))){const p=resolve(root,path);if(!p.startsWith(root+sep))throw Error('Path mismatch');mkdirSync(dirname(p),{recursive:true});writeFileSync(p,content);}
+          NODE
+      - name: Install pinned x402 validation SDK
+        working-directory: free-host-copy
+        run: npm install --omit=dev --no-audit --no-fund
+      - name: Verify the live service as an unauthenticated stranger
+        working-directory: free-host-copy
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          import {verifyLive} from './verify-live.mjs';
+          const {origin}=JSON.parse(readFileSync('../decision-integrity-free-host.verify.json','utf8'));
+          const root=await fetch(origin+'/',{redirect:'manual',signal:AbortSignal.timeout(25000)});
+          const html=await root.text();
+          writeFileSync('homepage-probe.json',JSON.stringify({status:root.status,headers:Object.fromEntries(root.headers),html}));
+          console.log('Homepage HTTP '+root.status+', canonical header: '+root.headers.get('link'));
+          const report=await verifyLive(origin);
+          console.log(JSON.stringify({origin,checkedAt:report.checkedAt,passed:report.live.filter(x=>x.passed).length,total:report.live.length,regression:report.regression.passed,allPassed:report.allPassed,failed:report.live.filter(x=>!x.passed)}));
+          if(!report.allPassed)process.exitCode=1;
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: decision-integrity-independent-verification
+          path: |
+            free-host-copy/live-verification.json
+            free-host-copy/test-results.json
+            free-host-copy/homepage-probe.json
+          if-no-files-found: warn
+          retention-days: 7
