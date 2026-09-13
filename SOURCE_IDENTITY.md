@@ -1,3 +1,11 @@
+# Current service source identity
+
+Canonical service: https://decision-integrity-service.wheelerhubbell.chatgpt.site.
+
+The September 13, 2026 migration recovered Decision_Integrity_Source_Repository_2026-09-13.zip from the existing working Decision Integrity service. The evaluator, validator, payment gate, and attestation implementation were preserved. The only modifications to original modules are canonical-origin and required MCP-route substitutions. The production source is retained with its history in the Sites project repository; deployment source commit: 08d45a648566334ac0fefdbda86d2f6cab3246ef.
+
+## Historical RC1 source identity
+
 # Source identity
 
 This deployment wrapper calls the compiled evaluator from **Decision Integrity Protocol v1.0.0-rc.1**.

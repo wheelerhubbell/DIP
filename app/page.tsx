@@ -29,9 +29,10 @@ export default function Home() {
         <strong>DIP does not grant authority.</strong> It evaluates whether
         asserted authority supports a specific proposed transition.
       </p>
+      <p><strong>Canonical commercial service:</strong>{" "}<a href="https://decision-integrity-service.wheelerhubbell.chatgpt.site">Decision Integrity — 1 USDC on Base mainnet</a>. <a href="https://decision-integrity-service.wheelerhubbell.chatgpt.site/AGENTS.md">Agent instructions</a>.</p>
       <hr style={{ margin: "40px 0" }} />
       <p>
-        This public surface defines what an evaluation accepts, what it may
+        The historical RC1 material retained in this repository defines what that release accepts, what it may
         return, the rules and limits that govern the result, the identity of the
         RC1 release, and how to verify that a result was officially issued by
         Wheeler Hubbell Publishing, Inc.
@@ -46,16 +47,16 @@ export default function Home() {
       </p>
       <p>
         <strong>Evaluation input contract:</strong>{" "}
-        <a href="/evaluation-input.schema.json">/evaluation-input.schema.json</a>
+        <a href="https://decision-integrity-service.wheelerhubbell.chatgpt.site/schema.json">Current request schema</a>
       </p>
       <p>
         <strong>Official result contract:</strong>{" "}
-        <a href="/official-result.schema.json">/official-result.schema.json</a>
+        <a href="https://decision-integrity-service.wheelerhubbell.chatgpt.site/result.schema.json">Current result schema</a>
       </p>
       <p>
         <strong>Verification-key registry:</strong>{" "}
-        <a href="/.well-known/whp-dip-keys.json">
-          /.well-known/whp-dip-keys.json
+        <a href="https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/jwks.json">
+          Current service verification keys
         </a>
       </p>
       <p style={mono}>
@@ -63,10 +64,7 @@ export default function Home() {
       </p>
       <hr style={{ margin: "40px 0" }} />
       <p>
-        <strong>Execution status:</strong> the production execution service is
-        separate from this repository and is not represented as active until its
-        private evaluator runtime, signing identity, settlement configuration,
-        and verification path are actually provisioned and verified.
+        <strong>Execution status:</strong> the complete service is live at the canonical endpoint above. Independent public verification passed 35/35 checks. A funded mainnet purchase completing and returning an evaluation has not been demonstrated.
       </p>
       <p>
         An evaluation does not replace law, human judgment, organizational

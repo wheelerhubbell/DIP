@@ -1,3 +1,11 @@
+# Current Decision Integrity result verification
+
+The current commercial service is https://decision-integrity-service.wheelerhubbell.chatgpt.site. New results follow [the deployed result schema](https://decision-integrity-service.wheelerhubbell.chatgpt.site/result.schema.json) and contain an Ed25519 JWS over the full result envelope. Verify its signature against [the current service JWKS](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/jwks.json), check the signed envelope matches the returned envelope, and retain the entire represented record and limits. [Current agent instructions](https://decision-integrity-service.wheelerhubbell.chatgpt.site/AGENTS.md).
+
+The hosting migration uses a new runtime signing key because the recovered source archive does not contain the old private key. This does not alter the payment receiver. Historical RC1 keys and verifiers below are retained for their original receipts and must not be substituted for the current JWS contract.
+
+## Historical RC1 verification
+
 # Verifying an Official WHP DIP Result
 
 **[Verify in your browser](https://decision-integrity.wheelerhubbell.chatgpt.site/dip#verify)**: choose or paste the original receipt. Verification runs on your device against the published envelope schema and v1 signature/digest contract, using WHP’s independently downloaded public key registry. It does not upload receipt content or make a payment. It does not check the separate companion file.

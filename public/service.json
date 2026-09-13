@@ -1,22 +1,22 @@
 {
   "schemaVersion": "WHP-DIP-SERVICE-DESCRIPTOR-v1",
-  "name": "WHP Decision Integrity Protocol",
+  "name": "Decision Integrity",
   "publisher": "Wheeler Hubbell Publishing, Inc.",
-  "description": "Evaluate whether a proposed transition is supported by supplied standing, authority, warrants, qualifiers, constraints, and requested force.",
-  "homepage": "https://whp-dip-x402.vercel.app",
+  "description": "Evaluate whether evidence and represented authority warrant a requested action. Detect unsupported inference, qualifier stripping, erased unknowns, broken provenance, and exceeded decision boundaries.",
+  "homepage": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
   "documentation": "https://github.com/wheelerhubbell/DIP/blob/main/SERVICE_ACCESS.md",
   "endpoint": {
-    "url": "https://whp-dip-x402.vercel.app/api/evaluate",
+    "url": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/evaluate",
     "method": "POST",
     "contentType": "application/json"
   },
-  "inputSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
-  "inputExample": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/examples/inform.json",
-  "publishedResultSchema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json",
-  "resultVerification": "https://github.com/wheelerhubbell/DIP/blob/main/OFFICIAL_RESULT_VERIFICATION.md",
-  "publicKeyRegistry": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/.well-known/whp-dip-keys.json",
+  "inputSchema": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/schema.json",
+  "inputExample": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/example.json",
+  "publishedResultSchema": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/result.schema.json",
+  "resultVerification": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/AGENTS.md",
+  "publicKeyRegistry": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/jwks.json",
   "terms": "https://github.com/wheelerhubbell/DIP/blob/main/PUBLIC_TERMS.md",
-  "openapi": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/openapi.json",
+  "openapi": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/openapi.json",
   "payment": {
     "protocol": "x402",
     "version": 2,
@@ -31,31 +31,27 @@
     "note": "Read current requirements before authorizing payment; a direct wallet transfer does not execute an evaluation."
   },
   "release": {
-    "version": "1.0.0-rc.1",
-    "sealedArchiveSha256": "6a73d326d071c8c297609b74a55f4bf6328012ff446ac83cc58fb9a6374c6263"
-  },
-  "receiptCompanion": {
-    "version": "WHP-DIP-RECEIPT-COMPANION-v1",
-    "schema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/receipt-companion.schema.json",
-    "documentation": "https://github.com/wheelerhubbell/DIP/blob/main/PROPAGATION.md",
-    "module": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/tools/receipt-companion.mjs",
-    "packagingLocation": "participating-client",
-    "serverAutomaticallyAttachesCompanion": false,
-    "preservesOriginalReceiptBytes": true,
-    "localPackagingAndVerificationRequirePayment": false
+    "version": "1.0.0",
+    "profile": "Structured Record 1.0",
+    "source": "Recovered existing Decision Integrity service; hosting migration only"
   },
   "browserAccess": {
-    "url": "https://decision-integrity.wheelerhubbell.chatgpt.site/dip",
-    "receiptVerification": "https://decision-integrity.wheelerhubbell.chatgpt.site/dip#verify",
-    "agentInstructions": "https://decision-integrity.wheelerhubbell.chatgpt.site/dip#agents",
-    "receiptProcessing": "local-on-device",
-    "receiptVerificationRequiresPayment": false,
+    "url": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
     "pageInitiatesPayments": false
   },
-  "inputPreflight": {
-    "module": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/tools/input-preflight.mjs",
-    "schema": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json",
-    "automaticIn": "createDipClient",
-    "scope": "structural-only-before-authorized-fetch"
+  "canonical": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+  "discovery": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/x402",
+  "mcp": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/agent/mcp",
+  "a2a": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/a2a",
+  "agentCard": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/agent-card.json",
+  "verification": {
+    "live": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/verification",
+    "independent": "https://github.com/wheelerhubbell/DIP/actions/runs/34754223539",
+    "publicChecks": {
+      "passed": 35,
+      "total": 35
+    },
+    "mainnetPurchaseExecuted": false,
+    "mainnetSettlementObserved": false
   }
 }

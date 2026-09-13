@@ -1,25 +1,24 @@
-# WHP Decision Integrity Protocol
+# Decision Integrity
 
-> DIP evaluates a structured proposed transition against supplied standing, authority, warrants, qualifiers, constraints, and requested force.
+> Evaluate whether evidence and represented authority warrant a requested action. Detect unsupported inference, qualifier stripping, erased unknowns, broken provenance, and exceeded decision boundaries. Exactly 1 USDC per evaluation on Base via x402 v2. No account or interactive checkout.
 
-## Receipt propagation
+Does this evidence warrant this conclusion? Is this action authorized? Do I have sufficient warrant to act? Are unknowns being erased? Are qualifiers being stripped? Is this inference warranted? Does provenance support this recommendation? Does the requested action exceed represented authority?
 
-- [Receipt companion and agent integration](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/PROPAGATION.md): Package an unchanged result with a route to WHP verification and a new evaluation; local and free.
-- [Companion schema](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/receipt-companion.schema.json): Unsigned discovery metadata beside the signed receipt.
+## Interface
 
-## Start here
+- [Agent instructions](https://decision-integrity-service.wheelerhubbell.chatgpt.site/AGENTS.md): complete calling and payment instructions.
+- [OpenAPI](https://decision-integrity-service.wheelerhubbell.chatgpt.site/openapi.json): canonical API.
+- [Request schema](https://decision-integrity-service.wheelerhubbell.chatgpt.site/schema.json): structured record and boundaries.
+- [Example](https://decision-integrity-service.wheelerhubbell.chatgpt.site/example.json): complete illustrative input.
+- [x402 discovery](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/x402): exact price and resource.
+- [MCP card](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/mcp.json): the same evaluator via MCP.
+- [A2A card](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/agent-card.json): the same evaluator via A2A.
+- [ARD](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/ard.json): agentic resource discovery.
+- [API catalog](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/api-catalog): RFC 9727.
+- [Attestation keys](https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/jwks.json): Ed25519 result verification.
 
-- [Browser access and local receipt verification](https://decision-integrity.wheelerhubbell.chatgpt.site/dip): Use cases, on-device verification, and copyable agent instructions. No payment initiated by the page.
+## Boundaries
 
-- [Live service access](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/SERVICE_ACCESS.md): POST endpoint, price, example request, x402 instructions, and paid-path verification status.
-- [Service descriptor](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/service.json): Machine-readable endpoint and advertised payment requirements.
-- [OpenAPI](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/openapi.json): API description for callers and importers.
-- [Input schema](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/evaluation-input.schema.json): Complete structured request contract.
-- [Synthetic request](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/examples/inform.json): Informational fixture; no real-world execution authority.
-- [Result schema](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/official-result.schema.json): Published official-result contract.
-- [Verification](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/OFFICIAL_RESULT_VERIFICATION.md): Verify the returned result's signature.
-- [Public key registry](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/.well-known/whp-dip-keys.json): WHP public verification keys.
-- [Protocol](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/PROTOCOL.md): Evaluation scope and limitations.
-- [Public terms](https://raw.githubusercontent.com/wheelerhubbell/DIP/main/PUBLIC_TERMS.md): Governing public terms.
+AUTHORIZED, BOUNDED, AWAITING_AUTHORITY, DENIED. All results preserve reasons, qualifiers, unknowns and provenance. This service audits represented evidence and authority; it does not independently verify external factual truth or execute actions.
 
-The endpoint is POST https://whp-dip-x402.vercel.app/api/evaluate. The payment challenge checked on 2026-09-10 advertised 1 USDC on Base mainnet via x402 v2. Paid evaluation and settlement have not yet been verified. These discovery files live in the public repository; no third-party directory listing is claimed.
+Current canonical commercial service: https://decision-integrity-service.wheelerhubbell.chatgpt.site. Historical RC1 artifacts in the repository do not replace the current service's request, result, or signature contracts.
