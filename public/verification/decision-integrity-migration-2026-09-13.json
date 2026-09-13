@@ -1,0 +1,761 @@
+{
+  "service": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+  "checkedAt": "2026-09-13T11:29:43.254Z",
+  "verifier": "Independent GitHub Actions runner",
+  "runUrl": "https://github.com/wheelerhubbell/DIP/actions/runs/34754569646",
+  "publicChecksUse": "Unauthenticated HTTPS. No deployment bypass, cookies, wallet keys or funded payment.",
+  "live": [
+    {
+      "name": "public /.well-known/x402.json",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/x402",
+      "passed": true
+    },
+    {
+      "name": "public /apis.json",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/agents.json",
+      "passed": true
+    },
+    {
+      "name": "public /llms-full.txt",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/jwks.json",
+      "passed": true
+    },
+    {
+      "name": "public /agents.txt",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/ai-catalog.json",
+      "passed": true
+    },
+    {
+      "name": "public /schema.json",
+      "passed": true
+    },
+    {
+      "name": "public /result.schema.json",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/api-catalog",
+      "passed": true
+    },
+    {
+      "name": "public /example.json",
+      "passed": true
+    },
+    {
+      "name": "public /sitemap.xml",
+      "passed": true
+    },
+    {
+      "name": "public /",
+      "passed": true
+    },
+    {
+      "name": "public /llms.txt",
+      "passed": true
+    },
+    {
+      "name": "public /robots.txt",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/mcp.json",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/mcp-server-card.json",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/ard.json",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/agent-card.json",
+      "passed": true
+    },
+    {
+      "name": "public /service.jsonld",
+      "passed": true
+    },
+    {
+      "name": "public /.well-known/agent.json",
+      "passed": true
+    },
+    {
+      "name": "public /agents.json",
+      "passed": true
+    },
+    {
+      "name": "public /AGENTS.md",
+      "passed": true
+    },
+    {
+      "name": "public /openapi.json",
+      "passed": true
+    },
+    {
+      "name": "unpaid live POST returns correct x402 v2 402",
+      "passed": true
+    },
+    {
+      "name": "malformed live payment releases no evaluation",
+      "passed": true
+    },
+    {
+      "name": "fake live payment releases no evaluation",
+      "passed": true
+    },
+    {
+      "name": "forged EIP-3009 signature cannot release an evaluation",
+      "passed": true
+    },
+    {
+      "name": "invalid live schema rejected before payment",
+      "passed": true
+    },
+    {
+      "name": "MCP initialize",
+      "passed": true
+    },
+    {
+      "name": "MCP current stateless discovery",
+      "passed": true
+    },
+    {
+      "name": "MCP tools/list exposes same schema",
+      "passed": true
+    },
+    {
+      "name": "MCP tool is payment gated",
+      "passed": true
+    },
+    {
+      "name": "A2A SendMessage is payment gated",
+      "passed": true
+    }
+  ],
+  "passed": 35,
+  "total": 35,
+  "readiness": {
+    "service": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+    "version": "1.0.0",
+    "ready": true,
+    "facilitator": "https://facilitator.payai.network",
+    "kinds": [
+      {
+        "x402Version": 2,
+        "scheme": "exact",
+        "network": "eip155:8453"
+      }
+    ],
+    "asOf": "2026-09-13T11:29:41.437Z",
+    "attestationReady": true,
+    "price": {
+      "scheme": "exact",
+      "network": "eip155:8453",
+      "amount": "1000000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "payTo": "0x1050eddd8282623b0c263ed6bdbd42370bbc28d3",
+      "maxTimeoutSeconds": 300
+    }
+  },
+  "compatibility": {
+    "service": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+    "sdk": "@x402/core@2.25.0",
+    "x402Version": 2,
+    "officialPaymentRequiredSchemaValid": true,
+    "headerBytes": 5720,
+    "headerMatchesBody": true,
+    "error": null,
+    "mainnetPurchaseExecuted": false
+  },
+  "hostedReport": {
+    "service": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+    "checkedAt": "2026-09-13T11:29:43.237Z",
+    "publicChecksUse": "Unauthenticated HTTPS requests to the canonical production URL; no deployment bypass token or cookies.",
+    "live": [
+      {
+        "name": "public /schema.json",
+        "passed": true
+      },
+      {
+        "name": "public /",
+        "passed": true
+      },
+      {
+        "name": "public /openapi.json",
+        "passed": true
+      },
+      {
+        "name": "public /example.json",
+        "passed": true
+      },
+      {
+        "name": "public /result.schema.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/x402",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/x402.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/mcp.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/mcp-server-card.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/agent.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/agent-card.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/ard.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/ai-catalog.json",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/api-catalog",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/agents.json",
+        "passed": true
+      },
+      {
+        "name": "public /apis.json",
+        "passed": true
+      },
+      {
+        "name": "public /agents.json",
+        "passed": true
+      },
+      {
+        "name": "public /AGENTS.md",
+        "passed": true
+      },
+      {
+        "name": "public /agents.txt",
+        "passed": true
+      },
+      {
+        "name": "public /llms.txt",
+        "passed": true
+      },
+      {
+        "name": "public /llms-full.txt",
+        "passed": true
+      },
+      {
+        "name": "public /robots.txt",
+        "passed": true
+      },
+      {
+        "name": "public /.well-known/jwks.json",
+        "passed": true
+      },
+      {
+        "name": "public /sitemap.xml",
+        "passed": true
+      },
+      {
+        "name": "public /service.jsonld",
+        "passed": true
+      },
+      {
+        "name": "unpaid live POST returns correct x402 v2 402",
+        "passed": true
+      },
+      {
+        "name": "malformed live payment releases no evaluation",
+        "passed": true
+      },
+      {
+        "name": "fake live payment releases no evaluation",
+        "passed": true
+      },
+      {
+        "name": "forged EIP-3009 signature cannot release an evaluation",
+        "passed": true
+      },
+      {
+        "name": "invalid live schema rejected before payment",
+        "passed": true
+      },
+      {
+        "name": "MCP initialize",
+        "passed": true
+      },
+      {
+        "name": "MCP current stateless discovery",
+        "passed": true
+      },
+      {
+        "name": "MCP tools/list exposes same schema",
+        "passed": true
+      },
+      {
+        "name": "MCP tool is payment gated",
+        "passed": true
+      },
+      {
+        "name": "A2A SendMessage is payment gated",
+        "passed": true
+      }
+    ],
+    "regression": {
+      "kind": "isolated regression tests; facilitator successes/failures simulated, no funds moved",
+      "passed": 56,
+      "total": 56,
+      "allPassed": true,
+      "results": [
+        {
+          "name": "valid_schema",
+          "passed": true
+        },
+        {
+          "name": "AUTHORIZED",
+          "passed": true
+        },
+        {
+          "name": "AWAITING_AUTHORITY",
+          "passed": true
+        },
+        {
+          "name": "BOUNDED_unknown",
+          "passed": true
+        },
+        {
+          "name": "BOUNDED_condition",
+          "passed": true
+        },
+        {
+          "name": "DENIED_qualifier_stripping",
+          "passed": true
+        },
+        {
+          "name": "DENIED_unknown_erasure",
+          "passed": true
+        },
+        {
+          "name": "DENIED_hash_mismatch",
+          "passed": true
+        },
+        {
+          "name": "DENIED_source_substitution",
+          "passed": true
+        },
+        {
+          "name": "DENIED_force_exceeded",
+          "passed": true
+        },
+        {
+          "name": "DENIED_scope_transfer",
+          "passed": true
+        },
+        {
+          "name": "DENIED_target_transfer",
+          "passed": true
+        },
+        {
+          "name": "DENIED_jurisdiction_transfer",
+          "passed": true
+        },
+        {
+          "name": "DENIED_expired_grant",
+          "passed": true
+        },
+        {
+          "name": "DENIED_revoked_grant",
+          "passed": true
+        },
+        {
+          "name": "DENIED_explicit_prohibition",
+          "passed": true
+        },
+        {
+          "name": "DENIED_unsupported_inference",
+          "passed": true
+        },
+        {
+          "name": "BOUNDED_disputed_source",
+          "passed": true
+        },
+        {
+          "name": "DENIED_retracted_source",
+          "passed": true
+        },
+        {
+          "name": "duplicate_ids_rejected",
+          "passed": true
+        },
+        {
+          "name": "unknown_fields_rejected",
+          "passed": true
+        },
+        {
+          "name": "missing_references_rejected",
+          "passed": true
+        },
+        {
+          "name": "missing_fields_rejected",
+          "passed": true
+        },
+        {
+          "name": "malformed_dates_rejected",
+          "passed": true
+        },
+        {
+          "name": "full_record_preserved",
+          "passed": true
+        },
+        {
+          "name": "nested_digest_sensitive",
+          "passed": true
+        },
+        {
+          "name": "key_order_independent_digest",
+          "passed": true
+        },
+        {
+          "name": "AUTHORIZED_warranted_inference",
+          "passed": true
+        },
+        {
+          "name": "DENIED_warrant_conclusion",
+          "passed": true
+        },
+        {
+          "name": "DENIED_warrant_premises",
+          "passed": true
+        },
+        {
+          "name": "DENIED_self_warranting",
+          "passed": true
+        },
+        {
+          "name": "DENIED_warrant_expired",
+          "passed": true
+        },
+        {
+          "name": "DENIED_warrant_revoked",
+          "passed": true
+        },
+        {
+          "name": "DENIED_warrant_scope",
+          "passed": true
+        },
+        {
+          "name": "DENIED_warrant_qualifier_stripping",
+          "passed": true
+        },
+        {
+          "name": "impossible_calendar_date_rejected",
+          "passed": true
+        },
+        {
+          "name": "action_record_id_collision_rejected",
+          "passed": true
+        },
+        {
+          "name": "unpaid_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "malformed_header_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "fake_header_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "verification_false_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "verification_throw_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "verification_payer_mismatch_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "settlement_false_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "settlement_throw_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "settlement_wrong_network_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "settlement_missing_transaction_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "settlement_wrong_payer_withholds_evaluator",
+          "passed": true
+        },
+        {
+          "name": "payment_amount_exact",
+          "passed": true
+        },
+        {
+          "name": "payment_recipient_exact",
+          "passed": true
+        },
+        {
+          "name": "payment_asset_exact",
+          "passed": true
+        },
+        {
+          "name": "payment_network_exact",
+          "passed": true
+        },
+        {
+          "name": "payment_body_binding",
+          "passed": true
+        },
+        {
+          "name": "expired_authorization_rejected",
+          "passed": true
+        },
+        {
+          "name": "cross_body_replay_same_settlement_key",
+          "passed": true
+        },
+        {
+          "name": "evaluation_only_after_verify_and_settle",
+          "passed": true
+        }
+      ]
+    },
+    "attestationKeyPairVerified": true,
+    "readiness": {
+      "service": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+      "version": "1.0.0",
+      "ready": true,
+      "facilitator": "https://facilitator.payai.network",
+      "kinds": [
+        {
+          "x402Version": 2,
+          "scheme": "exact",
+          "network": "eip155:8453"
+        }
+      ],
+      "asOf": "2026-09-13T11:29:43.237Z",
+      "attestationReady": true,
+      "price": {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "1000000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x1050eddd8282623b0c263ed6bdbd42370bbc28d3",
+        "maxTimeoutSeconds": 300
+      }
+    },
+    "mainnetPurchaseExecuted": false,
+    "mainnetSettlementObserved": false,
+    "allPassed": true,
+    "limitations": [
+      "Verification and settlement failure branches are additionally tested with isolated injected failures.",
+      "A funded mainnet purchase was not made. No mainnet settlement is claimed.",
+      "External directory inclusion and search ranking are not guaranteed by publishing discovery documents."
+    ]
+  },
+  "mainnetPurchaseExecuted": false,
+  "mainnetSettlementObserved": false,
+  "allPassed": true,
+  "migrationChecks": [
+    {
+      "name": "Previous origin GET /",
+      "status": 308,
+      "location": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/",
+      "passed": true
+    },
+    {
+      "name": "Previous origin GET /schema.json",
+      "status": 308,
+      "location": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/schema.json",
+      "passed": true
+    },
+    {
+      "name": "Previous origin POST /evaluate",
+      "status": 308,
+      "location": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/evaluate",
+      "passed": true
+    },
+    {
+      "name": "Previous origin POST /mcp",
+      "status": 308,
+      "location": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/agent/mcp",
+      "passed": true
+    },
+    {
+      "name": "Previous origin POST /a2a",
+      "status": 308,
+      "location": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/a2a",
+      "passed": true
+    },
+    {
+      "name": "Both old and new public signing keys retained",
+      "passed": true
+    }
+  ],
+  "migrationAllPassed": true,
+  "additionalPaymentVerification": {
+    "unfundedMainnet": {
+      "checkedAt": "2026-09-13T11:22:28.879Z",
+      "kind": "Real Base mainnet payment requirement and correctly signed authorization from a newly generated zero-USDC payer; no funded purchase",
+      "service": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+      "payer": "0xB80F033Cb98F3E7C65122679aEb17D646670774e",
+      "usdcBalanceAtomic": "0",
+      "balanceObservedAtBlock": "0x30e153b",
+      "facilitatorVerificationStatus": 200,
+      "facilitatorVerification": {
+        "isValid": false,
+        "invalidReason": "invalid_exact_evm_insufficient_balance",
+        "payer": "0xB80F033Cb98F3E7C65122679aEb17D646670774e",
+        "invalidMessage": "The contract function \"transferWithAuthorization\" reverted with the following reason:\nERC20: transfer amount exceeds balance\n\nContract Call:\n  address:   0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913\n  function:  transferWithAuthorization(address from, address to, uint256 value, uint256 validAfter, uint256 validBefore, bytes32 nonce, uint8 v, bytes32 r, bytes32 s)\n  args:                               (0xB80F033Cb98F3E7C65122679aEb17D646670774e, 0x1050eDDD8282623B0C263eD6bDBd42370BBC28D3, 1000000, 1789298474, 1789298774, 0x9d62e8f20fb0b181f65a655a1d22651461bdfa6fb3e28e220bf61f5513dfddaf, 27, 0x30d94f8fc205d52286abed317d2ecf11700190ba347d9e24a2ab4879953f17e7, 0x4ec8ff9974f13673cc13afa339f49aaf78927c40014b09d52c7054a25a359b8c)\n\nDocs: https://viem.sh/docs/contract/readContract\nDetails: execution reverted: ERC20: transfer amount exceeds balance\nVersion: viem@2.55.11"
+      },
+      "serviceStatus": 402,
+      "serviceError": "PAYMENT_VERIFICATION_FAILED",
+      "evaluationReleased": false,
+      "mainnetPurchaseExecuted": false,
+      "mainnetSettlementObserved": false,
+      "settlementEndpointInvokedByProbe": false,
+      "privateKeyRetained": false
+    },
+    "isolatedWorkerRoundTrips": {
+      "checkedAt": "2026-09-13T11:27:04.333Z",
+      "kind": "Isolated complete Worker HTTP/MCP/A2A payment-to-evaluation round trips; facilitator verification and settlement simulated",
+      "passed": 12,
+      "total": 12,
+      "allPassed": true,
+      "mainnetPurchaseExecuted": false,
+      "mainnetSettlementObserved": false,
+      "results": [
+        {
+          "transport": "HTTP",
+          "state": "AUTHORIZED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "MCP",
+          "state": "AUTHORIZED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "A2A",
+          "state": "AUTHORIZED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "HTTP",
+          "state": "AWAITING_AUTHORITY",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "MCP",
+          "state": "AWAITING_AUTHORITY",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "A2A",
+          "state": "AWAITING_AUTHORITY",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "HTTP",
+          "state": "BOUNDED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "MCP",
+          "state": "BOUNDED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "A2A",
+          "state": "BOUNDED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "HTTP",
+          "state": "DENIED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "MCP",
+          "state": "DENIED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        },
+        {
+          "transport": "A2A",
+          "state": "DENIED",
+          "passed": true,
+          "fullRecordPreserved": true,
+          "attestationSignatureVerified": true
+        }
+      ]
+    }
+  },
+  "deployment": {
+    "provider": "ChatGPT Sites / Cloudflare Workers",
+    "projectId": "appgprj_6aa68504f70c81918cdf98c28feb93f7",
+    "deploymentId": "appgdep_6aa688ec5f9c81918c1c3758e2f5ccfc",
+    "sourceCommit": "be80c1aae7f783f915ec84fe8a0d50e7f3dbef3b",
+    "additionalUpfrontPayment": 0
+  }
+}
