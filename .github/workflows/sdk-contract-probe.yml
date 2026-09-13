@@ -1,0 +1,54 @@
+name: SDK Contract Probe
+
+on:
+  push:
+    branches: [canonical-sdk-rebuild]
+    paths:
+      - .github/workflows/sdk-contract-probe.yml
+      - sdk/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Fetch canonical public contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://decision-integrity-service.wheelerhubbell.chatgpt.site'
+          curl -fsS "$BASE/schema.json" -o /tmp/schema.json
+          curl -fsS "$BASE/result.schema.json" -o /tmp/result.schema.json
+          curl -fsS "$BASE/example.json" -o /tmp/example.json
+          python - <<'PY'
+          import json
+          for path in ('/tmp/schema.json','/tmp/result.schema.json'):
+              data=json.load(open(path))
+              print(path, 'title=', data.get('title'))
+              print('required=', data.get('required'))
+              print('properties=', sorted((data.get('properties') or {}).keys()))
+              props=data.get('properties') or {}
+              for k,v in props.items():
+                  if 'jws' in k.lower() or 'attest' in k.lower() or 'sign' in k.lower() or 'receipt' in k.lower():
+                      print('signature-related', k, json.dumps(v, separators=(',',':'))[:2000])
+          PY
+      - name: Confirm unpaid POST challenge
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://decision-integrity-service.wheelerhubbell.chatgpt.site'
+          status=$(curl -sS -o /tmp/unpaid.json -D /tmp/unpaid.headers -w '%{http_code}' -H 'content-type: application/json' --data-binary @/tmp/example.json "$BASE/evaluate")
+          test "$status" = '402'
+          python - <<'PY'
+          import base64, json
+          headers=open('/tmp/unpaid.headers').read().splitlines()
+          raw=next(line.split(':',1)[1].strip() for line in headers if line.lower().startswith('payment-required:'))
+          raw += '=' * (-len(raw) % 4)
+          challenge=json.loads(base64.b64decode(raw))
+          print('x402Version=', challenge.get('x402Version'))
+          print('accepts=', json.dumps(challenge.get('accepts'), separators=(',',':'))[:4000])
+          PY
