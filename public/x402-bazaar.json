@@ -1,0 +1,33 @@
+{
+  "name": "Decision Integrity",
+  "publisher": "Wheeler Hubbell Publishing, Inc.",
+  "description": "Machine-payable decision-integrity evaluation for autonomous agents and API clients.",
+  "canonical": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+  "endpoint": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/evaluate",
+  "method": "POST",
+  "payment": {
+    "protocol": "x402",
+    "version": 2,
+    "scheme": "exact",
+    "network": "eip155:8453",
+    "currency": "USDC",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount": "1000000",
+    "decimals": 6,
+    "payTo": "0x1050eddd8282623b0c263ed6bdbd42370bbc28d3",
+    "liveRequirement": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/x402"
+  },
+  "interfaces": {
+    "openapi": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/openapi.json",
+    "mcp": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/agent/mcp",
+    "a2a": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/a2a",
+    "agentCard": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/agent-card.json"
+  },
+  "schemas": {
+    "input": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/schema.json",
+    "output": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/result.schema.json"
+  },
+  "verificationKeys": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/jwks.json",
+  "agentInstructions": "https://github.com/wheelerhubbell/DIP/blob/main/AGENTS.md",
+  "note": "This file is a distribution mirror for crawlers and registries. The live x402 challenge is authoritative for payment requirements."
+}
