@@ -1,0 +1,66 @@
+name: Decision Integrity — independent Sites verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [decision-integrity-netlify-20260913]
+    paths: [.github/workflows/decision-integrity-sites-verification.yml]
+permissions:
+  contents: read
+jobs:
+  public-service:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Test all 35 public checks without service credentials
+        run: |
+          cat > verify-public.mjs <<'NODE'
+          import {createHash} from 'node:crypto';
+          import {writeFile} from 'node:fs/promises';
+          const ORIGIN='https://decision-integrity-service.wheelerhubbell.chatgpt.site';
+          const canonical=v=>JSON.stringify(sort(v));
+          function sort(v){return Array.isArray(v)?v.map(sort):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,sort(v[k])])):v;}
+          const hash=v=>createHash('sha256').update(canonical(v)).digest('hex');
+          const encode=v=>Buffer.from(JSON.stringify(v)).toString('base64');
+          const PAYMENT={scheme:'exact',network:'eip155:8453',amount:'1000000',asset:'0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',payTo:'0x1050eddd8282623b0c263ed6bdbd42370bbc28d3',maxTimeoutSeconds:300};
+          const requirement=input=>({...PAYMENT,extra:{name:'USD Coin',version:'2',requestHash:hash(input)}});
+          const paths=['/','/openapi.json','/schema.json','/result.schema.json','/example.json','/.well-known/x402','/.well-known/x402.json','/.well-known/mcp.json','/.well-known/mcp-server-card.json','/.well-known/agent-card.json','/.well-known/agent.json','/.well-known/ard.json','/.well-known/ai-catalog.json','/.well-known/api-catalog','/apis.json','/.well-known/agents.json','/agents.json','/AGENTS.md','/agents.txt','/llms.txt','/llms-full.txt','/.well-known/jwks.json','/robots.txt','/sitemap.xml','/service.jsonld'];
+          const initial=await fetch(ORIGIN+'/example.json',{signal:AbortSignal.timeout(30000)});
+          if(initial.status!==200)throw Error('Public fixture inaccessible: '+initial.status+' '+await initial.text());
+          const input=await initial.json();
+          const live=[];
+          const check=async(name,fn)=>{try{const result=await fn();live.push({name,passed:result===true});}catch(e){live.push({name,passed:false,error:e.name+': '+e.message});}};
+          function dummyPayment(x){const now=Math.floor(Date.now()/1000);return {x402Version:2,accepted:requirement(x),payload:{signature:'0x'+'01'.repeat(65),authorization:{from:'0x'+'11'.repeat(20),to:PAYMENT.payTo,value:PAYMENT.amount,validAfter:String(now-60),validBefore:String(now+240),nonce:'0x'+'22'.repeat(32)}}};}
+            const get=async path=>fetch(ORIGIN+path,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(20000),redirect:'manual'});
+            const post=async(path,body,headers={})=>fetch(ORIGIN+path,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json, text/event-stream',...headers},body:JSON.stringify(body),signal:AbortSignal.timeout(25000),redirect:'manual'});
+            const map=new Map(paths.map(p=>[p,null]));
+            await Promise.all([...map.keys()].map(p=>check('public '+p,async()=>{const res=await get(p),text=await res.text();return res.status===200&&(text.includes(ORIGIN)||['/example.json','/.well-known/jwks.json'].includes(p))&&res.headers.get('link')?.includes(ORIGIN)&&!text.includes('Authentication Required');})));
+          
+            await check('unpaid live POST returns correct x402 v2 402',async()=>{const res=await post('/evaluate',input);const j=await res.json();const h=JSON.parse(Buffer.from(res.headers.get('payment-required')||'','base64').toString());return res.status===402&&j.x402Version===2&&canonical(j)===canonical(h)&&Object.entries(PAYMENT).every(([k,v])=>j.accepts[0][k]===v)&&j.accepts[0].extra.requestHash===hash(input)&&!j.evaluation;});
+            await check('malformed live payment releases no evaluation',async()=>{const res=await post('/evaluate',input,{'PAYMENT-SIGNATURE':'%%%'}),j=await res.json();return res.status===402&&!j.evaluation;});
+            await check('fake live payment releases no evaluation',async()=>{const res=await post('/evaluate',input,{'PAYMENT-SIGNATURE':encode({paid:true})}),j=await res.json();return res.status===402&&!j.evaluation;});
+            await check('forged EIP-3009 signature cannot release an evaluation',async()=>{const res=await post('/evaluate',input,{'PAYMENT-SIGNATURE':encode(dummyPayment(input))}),j=await res.json();return res.status===402&&j.error==='PAYMENT_VERIFICATION_FAILED'&&!j.evaluation;});
+            await check('invalid live schema rejected before payment',async()=>{const res=await post('/evaluate',{});return res.status===400;});
+            await check('MCP initialize',async()=>{const res=await post('/mcp',{jsonrpc:'2.0',id:1,method:'initialize',params:{protocolVersion:'2025-11-25',capabilities:{},clientInfo:{name:'stranger-probe',version:'1'}}});const j=await res.json();return res.status===200&&j.result.protocolVersion==='2025-11-25';});
+            await check('MCP current stateless discovery',async()=>{const res=await post('/mcp',{jsonrpc:'2.0',id:2,method:'server/discover',params:{_meta:{'io.modelcontextprotocol/protocolVersion':'2026-07-28','io.modelcontextprotocol/clientCapabilities':{}}}},{'MCP-Protocol-Version':'2026-07-28','MCP-Method':'server/discover'});const j=await res.json();return res.status===200&&j.result.supportedVersions.includes('2026-07-28');});
+            await check('MCP tools/list exposes same schema',async()=>{const res=await post('/mcp',{jsonrpc:'2.0',id:3,method:'tools/list',params:{}},{'MCP-Protocol-Version':'2025-11-25'});const j=await res.json();return res.status===200&&j.result.tools.length===1&&j.result.tools[0].inputSchema.$id===ORIGIN+'/schema.json';});
+            await check('MCP tool is payment gated',async()=>{const res=await post('/mcp',{jsonrpc:'2.0',id:4,method:'tools/call',params:{name:'evaluate_decision_integrity',arguments:input}},{'MCP-Protocol-Version':'2025-11-25'});const j=await res.json();return res.status===200&&j.result.isError===true&&j.result.structuredContent.x402Version===2&&!j.result.structuredContent.evaluation;});
+            await check('A2A SendMessage is payment gated',async()=>{const res=await post('/a2a',{jsonrpc:'2.0',id:5,method:'SendMessage',params:{message:{messageId:'stranger-probe',role:'ROLE_USER',parts:[{data:input}]}}},{'A2A-Version':'1.0'});const j=await res.json();return res.status===402&&j.error.data.x402Version===2&&!j.result;});
+          
+          const healthResponse=await get('/health');const readiness=await healthResponse.json();
+          const compatibilityResponse=await get('/compatibility');const compatibility=await compatibilityResponse.json();
+          const hostedReportResponse=await fetch(ORIGIN+'/verification',{signal:AbortSignal.timeout(110000)});const hostedReport=await hostedReportResponse.json();
+          const report={service:ORIGIN,checkedAt:new Date().toISOString(),verifier:process.env.GITHUB_ACTIONS?'Independent GitHub Actions runner':'Independent external Node process',runUrl:process.env.GITHUB_RUN_ID?'https://github.com/'+process.env.GITHUB_REPOSITORY+'/actions/runs/'+process.env.GITHUB_RUN_ID:null,publicChecksUse:'Unauthenticated HTTPS. No deployment bypass, cookies, wallet keys or funded payment.',live,passed:live.filter(x=>x.passed).length,total:live.length,readiness,compatibility,hostedReport,mainnetPurchaseExecuted:false,mainnetSettlementObserved:false};
+          report.allPassed=report.passed===35&&readiness.ready===true&&compatibility.officialPaymentRequiredSchemaValid===true&&compatibility.headerMatchesBody===true&&hostedReport.allPassed===true;
+          await writeFile(process.env.DI_REPORT_PATH||'decision-integrity-independent-verification.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify(report,null,2));
+          if(!report.allPassed)process.exitCode=1;
+          NODE
+          node verify-public.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: decision-integrity-sites-independent-verification
+          path: decision-integrity-independent-verification.json
