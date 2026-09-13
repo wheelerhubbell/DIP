@@ -54,6 +54,16 @@ jobs:
           const hostedReportResponse=await fetch(ORIGIN+'/verification',{signal:AbortSignal.timeout(110000)});const hostedReport=await hostedReportResponse.json();
           const report={service:ORIGIN,checkedAt:new Date().toISOString(),verifier:process.env.GITHUB_ACTIONS?'Independent GitHub Actions runner':'Independent external Node process',runUrl:process.env.GITHUB_RUN_ID?'https://github.com/'+process.env.GITHUB_REPOSITORY+'/actions/runs/'+process.env.GITHUB_RUN_ID:null,publicChecksUse:'Unauthenticated HTTPS. No deployment bypass, cookies, wallet keys or funded payment.',live,passed:live.filter(x=>x.passed).length,total:live.length,readiness,compatibility,hostedReport,mainnetPurchaseExecuted:false,mainnetSettlementObserved:false};
           report.allPassed=report.passed===35&&readiness.ready===true&&compatibility.officialPaymentRequiredSchemaValid===true&&compatibility.headerMatchesBody===true&&hostedReport.allPassed===true;
+          const migrationChecks=[];
+          for (const [path,method,target] of [['/','GET','/'],['/schema.json','GET','/schema.json'],['/evaluate','POST','/evaluate'],['/mcp','POST','/agent/mcp'],['/a2a','POST','/a2a']]) {
+            const r=await fetch('https://decision-integrity-whp.vercel.app'+path,{method,redirect:'manual',signal:AbortSignal.timeout(30000),...(method==='POST'?{headers:{'Content-Type':'application/json'},body:'{}'}:{})});
+            migrationChecks.push({name:'Previous origin '+method+' '+path,status:r.status,location:r.headers.get('location'),passed:r.status===308&&r.headers.get('location')===ORIGIN+target});
+          }
+          const keys=await (await get('/.well-known/jwks.json')).json();
+          migrationChecks.push({name:'Both old and new public signing keys retained',passed:keys.keys.some(k=>k.x==='o7gzbDDMjU1KhG2byrGBS7CyqFn3iSTB7QcelGyiXuE')&&keys.keys.some(k=>k.x==='b_K6-QbnpC3454ykWQmINLvFnh7wu8ki9FNTaHsE2g4')});
+          report.migrationChecks=migrationChecks;
+          report.migrationAllPassed=migrationChecks.every(x=>x.passed);
+          report.allPassed=report.allPassed&&report.migrationAllPassed;
           await writeFile(process.env.DI_REPORT_PATH||'decision-integrity-independent-verification.json',JSON.stringify(report,null,2)+'\n');
           console.log(JSON.stringify(report,null,2));
           if(!report.allPassed)process.exitCode=1;
