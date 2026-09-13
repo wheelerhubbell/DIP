@@ -1,8 +1,8 @@
-name: Decision Integrity — Netlify deployment
+name: Decision Integrity — independent free-host deployment
 on:
   push:
     branches: [decision-integrity-netlify-20260913]
-    paths: [decision-integrity-netlify.source.json]
+    paths: [decision-integrity-free-host.source.json]
 permissions:
   contents: read
 jobs:
@@ -14,43 +14,44 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Restore exact service source
+      - name: Restore digest-verified service source
         run: |
           node --input-type=module <<'NODE'
           import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
-          import {gunzipSync} from 'node:zlib';
+          import {brotliDecompressSync} from 'node:zlib';
           import {dirname,resolve,sep} from 'node:path';
           import {createHash} from 'node:crypto';
-          const bundle=JSON.parse(readFileSync('decision-integrity-netlify.source.json','utf8'));
-          const raw=gunzipSync(Buffer.from(bundle.content,'base64'));
+          const bundle=JSON.parse(readFileSync('decision-integrity-free-host.source.json','utf8'));
+          const encoded=bundle.parts.map(p=>readFileSync(p,'utf8').trim()).join('');
+          const raw=brotliDecompressSync(Buffer.from(encoded,'base64'));
           if(createHash('sha256').update(raw).digest('hex')!==bundle.sha256)throw Error('Source digest mismatch');
-          const files=JSON.parse(raw),root=resolve('netlify-copy');
+          const files=JSON.parse(raw),root=resolve('free-host-copy');
           for(const [path,content] of Object.entries(files)){
             const target=resolve(root,path);if(!target.startsWith(root+sep))throw Error('Invalid path');
             mkdirSync(dirname(target),{recursive:true});writeFileSync(target,content);
           }
           NODE
       - name: Install pinned payment SDK and deployment client
-        working-directory: netlify-copy
-        run: npm install --no-audit --no-fund --ignore-scripts
+        working-directory: free-host-copy
+        run: npm install --no-audit --no-fund
       - name: Verify evaluator and fail-closed regression suite
-        working-directory: netlify-copy
+        working-directory: free-host-copy
         run: npm test
-      - name: Deploy real service to Netlify and verify public endpoints
-        working-directory: netlify-copy
+      - name: Deploy independent Worker and test public endpoints
+        working-directory: free-host-copy
         env:
           CI: 'true'
-          NETLIFY_TELEMETRY_DISABLED: '1'
-        run: node deploy-netlify.mjs
+          WRANGLER_SEND_METRICS: 'false'
+        run: node deploy-cloudflare.mjs
       - name: Retain encrypted ownership details and verification evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: decision-integrity-netlify-deployment
+          name: decision-integrity-free-host-deployment
           path: |
-            netlify-copy/deployment-private.enc.json
-            netlify-copy/deployment-public.json
-            netlify-copy/live-verification.json
-            netlify-copy/test-results.json
+            free-host-copy/deployment-private.enc.json
+            free-host-copy/deployment-public.json
+            free-host-copy/live-verification.json
+            free-host-copy/test-results.json
           if-no-files-found: warn
           retention-days: 7
