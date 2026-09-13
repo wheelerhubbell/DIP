@@ -1,0 +1,30 @@
+name: Publish npm SDK
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'npm-v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sdk/typescript
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - run: npm install -g npm@^11.15.0
+      - run: npm install
+      - run: npm run build
+      - run: npm pack --dry-run
+      - run: npm publish --access public --provenance
