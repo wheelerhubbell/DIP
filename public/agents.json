@@ -1,0 +1,29 @@
+{
+  "name": "Decision Integrity",
+  "description": "Paid decision-integrity evaluation service for agents that need to test whether represented evidence and authority warrant a requested action.",
+  "canonical": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+  "agentInstructions": "https://github.com/wheelerhubbell/DIP/blob/main/AGENTS.md",
+  "openapi": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/openapi.json",
+  "llms": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/llms.txt",
+  "mcp": {
+    "endpoint": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/agent/mcp",
+    "registryDescriptor": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/server.json",
+    "wellKnown": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/mcp.json"
+  },
+  "a2a": {
+    "endpoint": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/a2a",
+    "agentCard": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/agent-card.json"
+  },
+  "x402": {
+    "discovery": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/x402",
+    "bazaarMirror": "https://raw.githubusercontent.com/wheelerhubbell/DIP/main/public/x402-bazaar.json",
+    "network": "eip155:8453",
+    "currency": "USDC",
+    "price": "1.00"
+  },
+  "schemas": {
+    "input": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/schema.json",
+    "output": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/result.schema.json"
+  },
+  "verificationKeys": "https://decision-integrity-service.wheelerhubbell.chatgpt.site/.well-known/jwks.json"
+}
