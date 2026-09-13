@@ -1,0 +1,39 @@
+{
+  "name": "@whp/decision-integrity-client",
+  "version": "0.1.0",
+  "description": "TypeScript client for the Decision Integrity x402 v2 service",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@x402/evm": "^2.25.0",
+    "@x402/fetch": "^2.25.0",
+    "jose": "^6.1.0",
+    "viem": "^2.37.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wheelerhubbell/DIP.git",
+    "directory": "sdk/typescript"
+  },
+  "homepage": "https://decision-integrity-service.wheelerhubbell.chatgpt.site",
+  "keywords": ["decision-integrity", "x402", "agents", "mcp", "base", "usdc"],
+  "license": "UNLICENSED"
+}
