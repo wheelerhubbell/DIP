@@ -2,7 +2,9 @@
 
 Canonical service: https://decision-integrity-service.wheelerhubbell.chatgpt.site.
 
-The September 13, 2026 migration recovered Decision_Integrity_Source_Repository_2026-09-13.zip from the existing working Decision Integrity service. The evaluator, validator, payment gate, and attestation implementation were preserved. The only modifications to original modules are canonical-origin and required MCP-route substitutions. The production source is retained with its history in the Sites project repository; deployment source commit: 08d45a648566334ac0fefdbda86d2f6cab3246ef.
+The September 13, 2026 migration recovered Decision_Integrity_Source_Repository_2026-09-13.zip from the existing working Decision Integrity service. The evaluator, validator, payment gate, and attestation implementation were preserved. The only modifications to original modules are canonical-origin and required MCP-route substitutions. The production source is retained with its history in the Sites project repository; deployment source commit: be80c1aae7f783f915ec84fe8a0d50e7f3dbef3b.
+
+The previous Vercel origin now returns method-preserving redirects to this canonical home. Both the current and preceding public Ed25519 keys are published at the canonical JWKS so earlier signatures remain verifiable.
 
 ## Historical RC1 source identity
 
