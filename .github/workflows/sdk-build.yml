@@ -1,0 +1,44 @@
+name: SDK Build
+
+on:
+  push:
+    branches: [canonical-sdk-rebuild]
+    paths:
+      - sdk/**
+      - .github/workflows/sdk-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typescript:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sdk/typescript
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: sdk/typescript/package-lock.json
+      - run: npm install
+      - run: npm run build
+      - run: npm pack --dry-run
+
+  python:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sdk/python
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip build
+      - run: python -m pip install -e .
+      - run: python -c "from whp_decision_integrity import DecisionIntegrityClient, verify_decision_integrity_attestation; print('import-ok')"
+      - run: python -m build
