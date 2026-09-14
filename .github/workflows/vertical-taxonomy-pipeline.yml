@@ -1,0 +1,42 @@
+name: Vertical Taxonomy Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/verticals/**'
+      - 'data/trusted-source-domains.json'
+      - 'package.json'
+      - '.github/workflows/vertical-taxonomy-pipeline.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-batch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm install
+      - name: Validate current registry
+        run: npm run verticals:validate
+      - name: Ingest official Census NAICS 2022 structure
+        run: npm run verticals:ingest-naics
+      - name: Prepare next 50 unprocessed industries
+        run: npm run verticals:batch
+      - name: Show taxonomy and batch counts
+        run: |
+          node -e "const n=require('./data/naics-2022.json'); const q=require('./data/vertical-queue/pending.json'); console.log({naics:n.count,queued:q.tasks.length,remaining:q.remaining_before_batch-q.tasks.length})"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vertical-taxonomy-batch
+          path: |
+            data/naics-2022.json
+            data/vertical-queue/pending.json
+          retention-days: 14
