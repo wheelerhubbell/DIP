@@ -4,11 +4,11 @@ Both release workflows use GitHub-hosted runners and OIDC (`id-token: write`) so
 
 ## npm
 
-Package: `@whp/decision-integrity-client`
+Package: `whp-decision-integrity-client`
 
 Workflow: `.github/workflows/publish-npm.yml`
 
-Important: npm currently requires the package to already exist before a Trusted Publisher can be configured. The first npm release must therefore create the package under the `@whp` scope using an npm account that has permission to publish that scope. After that first release, configure the package's Trusted Publisher with:
+Important: npm currently requires the package to already exist before a Trusted Publisher can be configured. The first npm release must therefore create the unscoped package using the npm account that will own it. After that first release, configure the package's Trusted Publisher with:
 
 - GitHub owner: `wheelerhubbell`
 - Repository: `DIP`
