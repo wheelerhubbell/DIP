@@ -10,6 +10,7 @@ on:
       - 'app/industries/**'
       - 'app/sitemap.ts'
       - 'public/vertical-registry.schema.json'
+      - 'tsconfig.json'
       - '.github/workflows/vertical-build.yml'
   workflow_dispatch:
 
