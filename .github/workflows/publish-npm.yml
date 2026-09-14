@@ -5,6 +5,10 @@ on:
   push:
     tags:
       - 'npm-v*'
+    branches:
+      - main
+    paths:
+      - '.github/npm-publish-trigger'
 
 permissions:
   contents: read
