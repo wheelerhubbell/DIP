@@ -1,9 +1,9 @@
-# @whp/decision-integrity-client
+# whp-decision-integrity-client
 
 Canonical TypeScript client for the live Decision Integrity service.
 
 ```ts
-import { createDecisionIntegrityClient } from "@whp/decision-integrity-client";
+import { createDecisionIntegrityClient } from "whp-decision-integrity-client";
 const dip = createDecisionIntegrityClient(process.env.EVM_PRIVATE_KEY as `0x${string}`);
 const result = await dip.evaluateVerified(input);
 ```
