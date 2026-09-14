@@ -1,0 +1,121 @@
+{
+  "$schema": "https://schema.wheelerhubbell.com/vertical-registry.json",
+  "verticals": [
+    {
+      "slug": "architecture",
+      "name": "Architecture & Structural Engineering",
+      "core_decision": "May this design modification or deviation be formally approved?",
+      "vocabulary": {
+        "primary_actor": "Architect of Record",
+        "artifact": "Construction Document",
+        "validation_event": "Plan Review"
+      },
+      "evidence_types": [
+        "Red-lined drawings",
+        "Structural calculation sheets",
+        "Material specifications",
+        "AHJ code compliance memos"
+      ],
+      "authority_roles": [
+        "Architect of Record",
+        "Structural Engineer",
+        "Authority Having Jurisdiction (AHJ)",
+        "Owner's Representative"
+      ],
+      "example_request": "Verify load-bearing modification compliance for structural steel placement on Level 4.",
+      "discovery_terms": [
+        "architectural compliance",
+        "design change verification",
+        "structural audit",
+        "AHJ approval record"
+      ]
+    },
+    {
+      "slug": "ballet",
+      "name": "Classical Ballet & Performing Arts",
+      "core_decision": "Is this casting adjustment or role substitution authorized under production policy?",
+      "vocabulary": {
+        "primary_actor": "Artistic Director",
+        "artifact": "Rehearsal Schedule",
+        "validation_event": "Cast Substitution"
+      },
+      "evidence_types": [
+        "Master casting sheets",
+        "Union or AGMA contract clauses",
+        "Understudy clearance logs",
+        "Medical release notices"
+      ],
+      "authority_roles": [
+        "Artistic Director",
+        "Choreographer",
+        "Company Manager",
+        "Production Stage Manager"
+      ],
+      "example_request": "Validate principal dancer substitution for Act II Swan Queen due to injury.",
+      "discovery_terms": [
+        "ballet casting verification",
+        "production authority audit",
+        "stage management record",
+        "casting integrity"
+      ]
+    },
+    {
+      "slug": "legal",
+      "name": "Legal Practice & Appellate Procedure",
+      "core_decision": "Does this motion filing sequence satisfy procedural continuity and evidentiary standard requirements?",
+      "vocabulary": {
+        "primary_actor": "Counsel of Record",
+        "artifact": "Pleading",
+        "validation_event": "Docket Filing"
+      },
+      "evidence_types": [
+        "Exhibits and affidavits",
+        "Jurisdictional citation records",
+        "Service of process logs",
+        "Transcript extracts"
+      ],
+      "authority_roles": [
+        "Lead Counsel",
+        "Managing Partner",
+        "Court Clerk",
+        "Appellate Panel"
+      ],
+      "example_request": "Verify evidentiary chain and service compliance for emergency injunction filing.",
+      "discovery_terms": [
+        "legal workflow integrity",
+        "docket verification",
+        "procedural proof test",
+        "litigation record audit"
+      ]
+    },
+    {
+      "slug": "insurance",
+      "name": "Complex Commercial Insurance & Claims",
+      "core_decision": "Is this loss adjustment calculation fully substantiated by the underlying policy declarations and loss data?",
+      "vocabulary": {
+        "primary_actor": "Senior Adjuster",
+        "artifact": "Loss Ledger",
+        "validation_event": "Claim Settlement"
+      },
+      "evidence_types": [
+        "Policy endorsement schedules",
+        "Forensic engineering reports",
+        "Invoiced repair estimates",
+        "Notice of loss timestamp logs"
+      ],
+      "authority_roles": [
+        "Lead Claims Adjuster",
+        "Underwriting Director",
+        "Independent Actuary",
+        "Insured Representative"
+      ],
+      "example_request": "Validate business interruption payout calculation against historical ledger baselines.",
+      "discovery_terms": [
+        "claims verification",
+        "loss adjustment audit",
+        "policy compliance check",
+        "underwriting integrity"
+      ]
+    }
+  ]
+}
