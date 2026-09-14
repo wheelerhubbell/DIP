@@ -1,5 +1,5 @@
 {
-  "name": "@whp/decision-integrity-client",
+  "name": "whp-decision-integrity-client",
   "version": "0.1.0",
   "description": "TypeScript client for the Decision Integrity x402 v2 service",
   "type": "module",
