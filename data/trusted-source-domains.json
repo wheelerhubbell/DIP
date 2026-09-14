@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "trusted_suffixes": [
+    ".gov",
+    ".mil"
+  ],
+  "trusted_domains": [
+    "census.gov",
+    "ecfr.gov",
+    "govinfo.gov",
+    "congress.gov",
+    "uscode.house.gov",
+    "sec.gov",
+    "finra.org",
+    "faa.gov",
+    "fda.gov",
+    "epa.gov",
+    "osha.gov",
+    "dol.gov",
+    "nrc.gov",
+    "ftc.gov",
+    "fcc.gov",
+    "dot.gov",
+    "ntsb.gov",
+    "cms.gov",
+    "hhs.gov",
+    "usda.gov",
+    "nist.gov",
+    "cisa.gov",
+    "energy.gov",
+    "uspto.gov",
+    "copyright.gov",
+    "asme.org",
+    "astm.org",
+    "nfpa.org",
+    "ieee.org",
+    "iso.org",
+    "ansi.org",
+    "icc-safe.org",
+    "aia.org"
+  ],
+  "notes": "A trusted host is necessary, not sufficient. Candidate sources must also be live and content-matched before a generated vertical can clear quarantine."
+}
