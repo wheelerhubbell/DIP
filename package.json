@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:receipts": "node --test tools/input-preflight.test.mjs tools/receipt-companion.test.mjs verify/verify-official-result.test.mjs"
+    "test:receipts": "node --test tools/input-preflight.test.mjs tools/receipt-companion.test.mjs verify/verify-official-result.test.mjs",
+    "verticals:validate": "node tools/verticals/validate-registry.mjs data/verticals.json",
+    "verticals:ingest-naics": "node tools/verticals/ingest-naics.mjs",
+    "verticals:batch": "node tools/verticals/create-batches.mjs",
+    "verticals:process": "node tools/verticals/process-candidates.mjs",
+    "verticals:apply": "node tools/verticals/process-candidates.mjs --apply"
   },
   "dependencies": {
     "next": "latest",
@@ -17,6 +22,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "xlsx": "^0.18.5"
   }
 }
