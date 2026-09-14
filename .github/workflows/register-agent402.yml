@@ -1,0 +1,24 @@
+name: Register Decision Integrity with Agent402
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/agent402-register-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Register canonical Decision Integrity origin
+        run: |
+          set -euo pipefail
+          response=$(curl --fail-with-body -sS -X POST \
+            https://agent402.tools/api/index/register \
+            -H 'content-type: application/json' \
+            -d '{"origin":"https://decision-integrity-service.wheelerhubbell.chatgpt.site"}')
+          echo "$response"
