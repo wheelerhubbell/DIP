@@ -1,4 +1,4 @@
-name: Standing direct x402 repair probe
+name: Standing live direct x402 proof
 
 on:
   push:
@@ -15,60 +15,133 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Fetch repaired Standing branch
+      - name: Fetch exact current production source helpers
         run: |
           git init standing
           cd standing
           git remote add origin https://github.com/wheelerhubbell/WheelerHubbellPublishingStandingMark.git
-          git fetch --depth 1 origin direct-x402-acquisition-20260916
+          git fetch --depth 1 origin main
           git checkout --detach FETCH_HEAD
-      - name: Verify unsigned machine boundary and discovery hashes
+      - name: Probe live production from outside Netlify with no WHP buyer proof and no payment
         run: |
           cd standing
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
-          import {setup} from './test/fixtures.mjs';
-          import {canonical,hash} from './src/canonical.mjs';
-          import {publicMachineRoute,publicContract,publicOpenapi,publicResolution} from './src/public-machine.mjs';
-          import {RESOLUTION_PATH} from './src/protocol.mjs';
+          import {generateKeyPairSync} from 'node:crypto';
+          import {canonical,hash,publicDer,randomHex,seal} from './src/canonical.mjs';
 
-          const a=await setup();
-          try {
-            const raw=canonical(a.f.submission);
-            const unpaid=await publicMachineRoute(a.service,new Request('https://standing.test.invalid/v1/evaluations',{method:'POST',headers:{'content-type':'application/json'},body:raw}));
-            assert.equal(unpaid.status,402);
-            assert.ok(unpaid.headers.get('payment-required'));
-            const terms=await unpaid.json();
-            assert.equal(terms.x402Version,2);
-            assert.equal(terms.extensions.bazaar.info.input.headers && Object.keys(terms.extensions.bazaar.info.input.headers).length,0);
+          const origin='https://wheelerhubbellpublishingstandingmark.netlify.app';
+          const expected={
+            network:'eip155:8453',
+            asset:'0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+            payTo:'0x1050eddd8282623b0c263ed6bdbd42370bbc28d3',
+            amount:'1000000'
+          };
 
-            const c=publicContract(a.service);
-            assert.equal(c.authentication.purchase,'NONE_BEYOND_X402_PAYMENT');
-            assert.equal(c.authentication.retrieval,'NONE');
-            assert.equal(c.purchase.whp_buyer_signature_required,false);
+          const health=await fetch(origin+'/healthz',{redirect:'error'});
+          assert.equal(health.status,200);
+          const contractResponse=await fetch(origin+'/v1/contract',{redirect:'error'});
+          assert.equal(contractResponse.status,200);
+          const contract=await contractResponse.json();
+          assert.equal(contract.authentication.purchase,'NONE_BEYOND_X402_PAYMENT');
+          assert.equal(contract.authentication.retrieval,'NONE');
+          assert.equal(contract.purchase.whp_buyer_signature_required,false);
+          assert.equal(contract.purchase.requirements.network,expected.network);
+          assert.equal(contract.purchase.requirements.asset.toLowerCase(),expected.asset);
+          assert.equal(contract.purchase.requirements.payTo.toLowerCase(),expected.payTo);
+          assert.equal(contract.purchase.requirements.amount,expected.amount);
 
-            const api=publicOpenapi(a.service);
-            assert.equal(api.paths['/v1/evaluations'].post.security,undefined);
-            assert.equal(api.paths['/v1/purchases/{purchase_id}/result'].get.security,undefined);
-            assert.deepEqual(api.paths['/v1/reviews'].post.security,[{ClientProof:[]}]);
+          const openapiResponse=await fetch(origin+'/v1/openapi.json',{redirect:'error'});
+          assert.equal(openapiResponse.status,200);
+          const openapi=await openapiResponse.json();
+          assert.equal(openapi.paths['/v1/evaluations'].post.security,undefined);
+          assert.equal(openapi.paths['/v1/purchases/{purchase_id}/result'].get.security,undefined);
 
-            const resolution=publicResolution(a.service);
-            assert.equal(resolution.payload.service_contract.sha256,hash(c));
-            assert.equal(resolution.payload.openapi.sha256,hash(api));
-            const viaRoute=await publicMachineRoute(a.service,new Request('https://standing.test.invalid'+RESOLUTION_PATH));
-            assert.equal(viaRoute.status,200);
+          const now=Math.floor(Date.now()/1000);
+          const buyer=generateKeyPairSync('ed25519');
+          const source=generateKeyPairSync('ed25519');
+          const scope=contract.supported_scopes[0],jurisdiction=contract.supported_jurisdictions[0];
+          const bounds={scope,jurisdiction,valid_from:now-1,valid_until:now+60};
+          const sourcePayload={
+            id:'live-external-no-payment-proof',version:'1',
+            content:{purpose:'External live 402 boundary proof; no WHP buyer proof or payment authorization is sent.'},
+            locator:'urn:whp:live:no-payment-proof',epistemic_status:'REPORT',
+            qualifiers:['Boundary probe only.'],
+            unknowns:[{id:'authority-unestablished',description:'No admitted external source authority is claimed by this probe.',blocks:['INFORM','RECOMMEND','EXECUTE']}],
+            operations:['INFORM'],...bounds,status:'ACTIVE',prior_hash:null
+          };
+          const signedNode=seal('WHP-SOURCE-ATTESTATION-v1',sourcePayload,source.privateKey);
+          const submission={
+            version:'WHP-STANDING-SUBMISSION-v1',
+            client_reference:'live_probe_'+randomHex(12),
+            buyer_key:publicDer(buyer.privateKey),
+            profile:{id:contract.profile.id,version:contract.profile.version,sha256:contract.profile.sha256},
+            object:{id:sourcePayload.id,version:sourcePayload.version,root:hash(sourcePayload)},
+            bounds,requested_operation:'INFORM',nodes:[signedNode],transitions:[]
+          };
+          const body=canonical(submission);
+          const response=await fetch(origin+'/v1/evaluations',{
+            method:'POST',redirect:'error',
+            headers:{'content-type':'application/json'},
+            body
+          });
+          const responseText=await response.text();
+          assert.equal(response.status,402,`expected live 402, got ${response.status}: ${responseText.slice(0,500)}`);
+          assert.ok(response.headers.get('payment-required'),'PAYMENT-REQUIRED header missing');
+          assert.equal(response.headers.get('payment-response'),null,'unexpected settlement response');
+          const terms=JSON.parse(responseText);
+          assert.equal(terms.x402Version,2);
+          assert.equal(terms.accepts.length,1);
+          const offered=terms.accepts[0];
+          assert.equal(offered.network,expected.network);
+          assert.equal(offered.asset.toLowerCase(),expected.asset);
+          assert.equal(offered.payTo.toLowerCase(),expected.payTo);
+          assert.equal(offered.amount,expected.amount);
+          assert.equal(Object.keys(terms.extensions.bazaar.info.input.headers??{}).length,0);
 
-            const initBody=JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/list',params:{}});
-            const mcp=await publicMachineRoute(a.service,new Request('https://standing.test.invalid/mcp',{method:'POST',headers:{'content-type':'application/json','accept':'application/json, text/event-stream','mcp-protocol-version':'2025-11-25'},body:initBody}));
-            assert.equal(mcp.status,200);
-            const mcpData=JSON.parse(await mcp.text());
-            const evalTool=mcpData.result.tools.find(t=>t.name==='whp_standing_evaluation');
-            const resultTool=mcpData.result.tools.find(t=>t.name==='whp_standing_result');
-            assert.ok(evalTool);
-            assert.ok(resultTool);
-            assert.equal(Object.hasOwn(evalTool.inputSchema.properties,'client_proof'),false);
-            assert.equal(Object.hasOwn(resultTool.inputSchema.properties,'client_proof'),false);
+          const resolutionResponse=await fetch(origin+'/.well-known/standing-capability.json',{redirect:'error'});
+          assert.equal(resolutionResponse.status,200);
+          const resolution=await resolutionResponse.json();
+          assert.equal(resolution.payload.service_contract.sha256,hash(contract));
+          assert.equal(resolution.payload.openapi.sha256,hash(openapi));
 
-            console.log(JSON.stringify({ok:true,unsigned_http_to_402:true,contract_hash_bound:true,openapi_hash_bound:true,mcp_client_proof_required:false,payment_sent:false,funds_moved:false},null,2));
-          } finally { await a.store.close(); }
+          const mcpRequest={jsonrpc:'2.0',id:1,method:'tools/list',params:{}};
+          const mcp=await fetch(origin+'/mcp',{
+            method:'POST',redirect:'error',
+            headers:{'content-type':'application/json','accept':'application/json, text/event-stream','mcp-protocol-version':'2025-11-25'},
+            body:JSON.stringify(mcpRequest)
+          });
+          assert.equal(mcp.status,200);
+          const mcpData=await mcp.json();
+          const evalTool=mcpData.result.tools.find(t=>t.name==='whp_standing_evaluation');
+          const resultTool=mcpData.result.tools.find(t=>t.name==='whp_standing_result');
+          assert.ok(evalTool&&resultTool);
+          assert.equal(Object.hasOwn(evalTool.inputSchema.properties,'client_proof'),false);
+          assert.equal(Object.hasOwn(resultTool.inputSchema.properties,'client_proof'),false);
+
+          console.log('LIVE_STANDING_PROOF');
+          console.log(JSON.stringify({
+            observed_at:new Date().toISOString(),
+            origin,
+            health_http:health.status,
+            contract_http:contractResponse.status,
+            evaluation_http:response.status,
+            payment_required_header_present:true,
+            whp_buyer_proof_sent:false,
+            whp_buyer_proof_required_by_contract:false,
+            mcp_client_proof_required:false,
+            x402_version:terms.x402Version,
+            network:offered.network,
+            asset:offered.asset,
+            pay_to:offered.payTo,
+            amount_atomic:offered.amount,
+            amount_usdc:'1.000000',
+            payment_signature_sent:false,
+            payment_response_present:false,
+            funds_moved_by_probe:false,
+            live_contract_hash:hash(contract),
+            signed_resolution_contract_hash:resolution.payload.service_contract.sha256,
+            live_openapi_hash:hash(openapi),
+            signed_resolution_openapi_hash:resolution.payload.openapi.sha256
+          },null,2));
           NODE
