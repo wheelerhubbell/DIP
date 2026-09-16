@@ -1,4 +1,4 @@
-name: Standing external 402 probe
+name: Standing direct x402 repair probe
 
 on:
   push:
@@ -12,82 +12,63 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Use Node 22
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Fetch current Standing source
+      - name: Fetch repaired Standing branch
         run: |
           git init standing
           cd standing
           git remote add origin https://github.com/wheelerhubbell/WheelerHubbellPublishingStandingMark.git
-          git fetch --depth 1 origin main
+          git fetch --depth 1 origin direct-x402-acquisition-20260916
           git checkout --detach FETCH_HEAD
-
-      - name: Probe current production without WHP buyer proof
-        shell: bash
+      - name: Verify unsigned machine boundary and discovery hashes
         run: |
-          cat > probe.mjs <<'NODE'
-          import { generateKeyPairSync } from 'node:crypto';
-          import { canonical, hash, publicDer, randomHex, seal } from './standing/src/canonical.mjs';
+          cd standing
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import {setup} from './test/fixtures.mjs';
+          import {canonical,hash} from './src/canonical.mjs';
+          import {publicMachineRoute,publicContract,publicOpenapi,publicResolution} from './src/public-machine.mjs';
+          import {RESOLUTION_PATH} from './src/protocol.mjs';
 
-          const origin = 'https://wheelerhubbellpublishingstandingmark.netlify.app';
-          const expectedNetwork = 'eip155:8453';
-          const expectedPayTo = '0x1050eddd8282623b0c263ed6bdbd42370bbc28d3';
-          const expectedAsset = '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913';
+          const a=await setup();
+          try {
+            const raw=canonical(a.f.submission);
+            const unpaid=await publicMachineRoute(a.service,new Request('https://standing.test.invalid/v1/evaluations',{method:'POST',headers:{'content-type':'application/json'},body:raw}));
+            assert.equal(unpaid.status,402);
+            assert.ok(unpaid.headers.get('payment-required'));
+            const terms=await unpaid.json();
+            assert.equal(terms.x402Version,2);
+            assert.equal(terms.extensions.bazaar.info.input.headers && Object.keys(terms.extensions.bazaar.info.input.headers).length,0);
 
-          const checks = {};
-          for (const path of ['/healthz','/.well-known/whp-standing.json','/v1/contract']) {
-            const r = await fetch(origin + path, { redirect: 'error' });
-            checks[path] = { status: r.status, body: (await r.text()).slice(0, 500) };
-          }
-          console.log('PUBLIC_ENDPOINT_CHECKS');
-          console.log(JSON.stringify(checks, null, 2));
-          if (checks['/v1/contract'].status !== 200) throw new Error('CURRENT_STANDING_RUNTIME_NOT_READY');
+            const c=publicContract(a.service);
+            assert.equal(c.authentication.purchase,'NONE_BEYOND_X402_PAYMENT');
+            assert.equal(c.authentication.retrieval,'NONE');
+            assert.equal(c.purchase.whp_buyer_signature_required,false);
 
-          const contract = JSON.parse(checks['/v1/contract'].body);
-          const reqs = contract?.purchase?.requirements;
-          if (!reqs) throw new Error('CONTRACT_PAYMENT_REQUIREMENTS_MISSING');
-          if (reqs.network !== expectedNetwork) throw new Error(`CONTRACT_NETWORK_${reqs.network}`);
-          if (String(reqs.payTo).toLowerCase() !== expectedPayTo) throw new Error(`CONTRACT_PAYTO_${reqs.payTo}`);
-          if (String(reqs.asset).toLowerCase() !== expectedAsset) throw new Error(`CONTRACT_ASSET_${reqs.asset}`);
+            const api=publicOpenapi(a.service);
+            assert.equal(api.paths['/v1/evaluations'].post.security,undefined);
+            assert.equal(api.paths['/v1/purchases/{purchase_id}/result'].get.security,undefined);
+            assert.deepEqual(api.paths['/v1/reviews'].post.security,[{ClientProof:[]}]);
 
-          const scope = contract.supported_scopes?.[0];
-          const jurisdiction = contract.supported_jurisdictions?.[0];
-          const now = Math.floor(Date.now() / 1000);
-          const buyer = generateKeyPairSync('ed25519');
-          const source = generateKeyPairSync('ed25519');
-          const bounds = { scope, jurisdiction, valid_from: now - 1, valid_until: now + 60 };
-          const sourcePayload = {
-            id: 'external-no-funds-boundary-probe', version: '1',
-            content: { purpose: 'Verify that an ordinary machine request reaches 402 without WHP-specific buyer signing.' },
-            locator: 'urn:whp:external:no-funds-boundary-probe', epistemic_status: 'REPORT',
-            qualifiers: ['Unadmitted self-attestation used only to inspect the payment boundary.'],
-            unknowns: [{ id: 'authority-unestablished', description: 'No admitted source authority is asserted by this probe.', blocks: ['INFORM','RECOMMEND','EXECUTE'] }],
-            operations: ['INFORM'], ...bounds, status: 'ACTIVE', prior_hash: null
-          };
-          const signedNode = seal('WHP-SOURCE-ATTESTATION-v1', sourcePayload, source.privateKey);
-          const submission = {
-            version: 'WHP-STANDING-SUBMISSION-v1', client_reference: 'external_probe_' + randomHex(12),
-            buyer_key: publicDer(buyer.privateKey),
-            profile: { id: contract.profile.id, version: contract.profile.version, sha256: contract.profile.sha256 },
-            object: { id: sourcePayload.id, version: sourcePayload.version, root: hash(sourcePayload) },
-            bounds, requested_operation: 'INFORM', nodes: [signedNode], transitions: []
-          };
-          const body = canonical(submission);
-          const response = await fetch(origin + '/v1/evaluations', {
-            method: 'POST', redirect: 'error', headers: { 'content-type': 'application/json' }, body
-          });
-          const responseText = await response.text();
-          console.log('NO_WHP_PROOF_PURCHASE_CHECK');
-          console.log(JSON.stringify({ status: response.status, body: responseText.slice(0,1000), whp_client_proof_sent: false, payment_signature_sent: false }, null, 2));
-          if (response.status !== 402) throw new Error(`EXPECTED_402_WITHOUT_WHP_PROOF_GOT_${response.status}`);
-          const terms = JSON.parse(responseText);
-          const offered = terms.accepts?.[0];
-          if (!offered) throw new Error('402_TERMS_MISSING');
-          if (offered.network !== expectedNetwork || String(offered.payTo).toLowerCase() !== expectedPayTo || String(offered.asset).toLowerCase() !== expectedAsset) throw new Error('402_PAYMENT_DESTINATION_MISMATCH');
-          if (!response.headers.get('payment-required')) throw new Error('PAYMENT_REQUIRED_HEADER_MISSING');
-          console.log(JSON.stringify({ ok:true,status:402,network:offered.network,pay_to:offered.payTo,asset:offered.asset,amount_atomic:offered.amount,whp_specific_signature_required:false,payment_sent:false,funds_moved:false }, null, 2));
+            const resolution=publicResolution(a.service);
+            assert.equal(resolution.payload.service_contract.sha256,hash(c));
+            assert.equal(resolution.payload.openapi.sha256,hash(api));
+            const viaRoute=await publicMachineRoute(a.service,new Request('https://standing.test.invalid'+RESOLUTION_PATH));
+            assert.equal(viaRoute.status,200);
+
+            const initBody=JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/list',params:{}});
+            const mcp=await publicMachineRoute(a.service,new Request('https://standing.test.invalid/mcp',{method:'POST',headers:{'content-type':'application/json','accept':'application/json, text/event-stream','mcp-protocol-version':'2025-11-25'},body:initBody}));
+            assert.equal(mcp.status,200);
+            const mcpData=JSON.parse(await mcp.text());
+            const evalTool=mcpData.result.tools.find(t=>t.name==='whp_standing_evaluation');
+            const resultTool=mcpData.result.tools.find(t=>t.name==='whp_standing_result');
+            assert.ok(evalTool);
+            assert.ok(resultTool);
+            assert.equal(Object.hasOwn(evalTool.inputSchema.properties,'client_proof'),false);
+            assert.equal(Object.hasOwn(resultTool.inputSchema.properties,'client_proof'),false);
+
+            console.log(JSON.stringify({ok:true,unsigned_http_to_402:true,contract_hash_bound:true,openapi_hash_bound:true,mcp_client_proof_required:false,payment_sent:false,funds_moved:false},null,2));
+          } finally { await a.store.close(); }
           NODE
-          node probe.mjs
