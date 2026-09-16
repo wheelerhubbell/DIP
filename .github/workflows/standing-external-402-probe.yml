@@ -25,7 +25,7 @@ jobs:
           git fetch --depth 1 origin fdf72e5963f76b89b387f88cdfb32228c6c83114
           git checkout --detach FETCH_HEAD
 
-      - name: Probe live Standing payment boundary without payment
+      - name: Probe live Standing runtime and payment boundary without payment
         shell: bash
         run: |
           cat > probe.mjs <<'NODE'
@@ -33,13 +33,23 @@ jobs:
           import { canonical, encode, hash, hashBytes, publicDer, randomHex, seal } from './standing/src/canonical.mjs';
 
           const origin = 'https://whpstandingmark.netlify.app';
-          const endpoint = origin + '/v1/evaluations';
           const expectedNetwork = 'eip155:8453';
           const expectedPayTo = '0x1050eddd8282623b0c263ed6bdbd42370bbc28d3';
           const expectedAsset = '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913';
 
+          const checks = {};
+          for (const path of ['/healthz','/.well-known/whp-standing.json','/v1/contract']) {
+            const r = await fetch(origin + path, { redirect: 'error' });
+            checks[path] = { status: r.status, body: (await r.text()).slice(0, 500) };
+          }
+          console.log('PUBLIC_ENDPOINT_CHECKS');
+          console.log(JSON.stringify(checks, null, 2));
+
+          if (checks['/v1/contract'].status !== 200 || checks['/healthz'].status !== 200 || checks['/.well-known/whp-standing.json'].status !== 200) {
+            throw new Error('STANDING_RUNTIME_NOT_READY');
+          }
+
           const contractResponse = await fetch(origin + '/v1/contract', { redirect: 'error' });
-          if (contractResponse.status !== 200) throw new Error(`CONTRACT_STATUS_${contractResponse.status}`);
           const contract = await contractResponse.json();
           const reqs = contract?.purchase?.requirements;
           if (!reqs) throw new Error('CONTRACT_PAYMENT_REQUIREMENTS_MISSING');
@@ -62,11 +72,7 @@ jobs:
             locator: 'urn:whp:external:no-funds-boundary-probe',
             epistemic_status: 'REPORT',
             qualifiers: ['Unadmitted self-attestation used only to inspect the payment boundary.'],
-            unknowns: [{
-              id: 'authority-unestablished',
-              description: 'No admitted source authority is asserted by this probe.',
-              blocks: ['INFORM', 'RECOMMEND', 'EXECUTE']
-            }],
+            unknowns: [{ id: 'authority-unestablished', description: 'No admitted source authority is asserted by this probe.', blocks: ['INFORM','RECOMMEND','EXECUTE'] }],
             operations: ['INFORM'],
             ...bounds,
             status: 'ACTIVE',
@@ -77,16 +83,8 @@ jobs:
             version: 'WHP-STANDING-SUBMISSION-v1',
             client_reference: 'external_probe_' + randomHex(12),
             buyer_key: publicDer(buyer.privateKey),
-            profile: {
-              id: contract.profile.id,
-              version: contract.profile.version,
-              sha256: contract.profile.sha256
-            },
-            object: {
-              id: sourcePayload.id,
-              version: sourcePayload.version,
-              root: hash(sourcePayload)
-            },
+            profile: { id: contract.profile.id, version: contract.profile.version, sha256: contract.profile.sha256 },
+            object: { id: sourcePayload.id, version: sourcePayload.version, root: hash(sourcePayload) },
             bounds,
             requested_operation: 'INFORM',
             nodes: [signedNode],
@@ -95,27 +93,17 @@ jobs:
           const body = canonical(submission);
           const path = '/v1/evaluations';
           const proof = encode(seal('WHP-CLIENT-PROOF-v1', {
-            method: 'POST',
-            path,
-            body_hash: hashBytes(Buffer.from(body)),
-            issued_at: now,
-            expires_at: now + 120,
-            nonce: randomHex(16)
+            method: 'POST', path, body_hash: hashBytes(Buffer.from(body)), issued_at: now, expires_at: now + 120, nonce: randomHex(16)
           }, buyer.privateKey));
 
-          const response = await fetch(endpoint, {
+          const response = await fetch(origin + path, {
             method: 'POST',
             redirect: 'error',
-            headers: {
-              'content-type': 'application/json',
-              'whp-client-proof': proof
-            },
+            headers: { 'content-type': 'application/json', 'whp-client-proof': proof },
             body
           });
           const responseText = await response.text();
-          if (response.status !== 402) {
-            throw new Error(`EXPECTED_402_GOT_${response.status}: ${responseText.slice(0, 1000)}`);
-          }
+          if (response.status !== 402) throw new Error(`EXPECTED_402_GOT_${response.status}: ${responseText.slice(0, 1000)}`);
           const terms = JSON.parse(responseText);
           const paymentRequiredHeader = response.headers.get('payment-required');
           if (!paymentRequiredHeader) throw new Error('PAYMENT_REQUIRED_HEADER_MISSING');
@@ -123,16 +111,13 @@ jobs:
           if (!Array.isArray(terms.accepts) || terms.accepts.length !== 1) throw new Error('ACCEPTS_INVALID');
           const offered = terms.accepts[0];
           if (canonical(offered) !== canonical(reqs)) throw new Error('402_REQUIREMENTS_DIFFER_FROM_CONTRACT');
-          if (offered.network !== expectedNetwork) throw new Error(`402_NETWORK_${offered.network}`);
-          if (String(offered.payTo).toLowerCase() !== expectedPayTo) throw new Error(`402_PAYTO_${offered.payTo}`);
-          if (String(offered.asset).toLowerCase() !== expectedAsset) throw new Error(`402_ASSET_${offered.asset}`);
           const quoteReqs = terms?.extensions?.['whp-standing']?.info?.quote?.payload?.payment_requirements;
           if (!quoteReqs || canonical(quoteReqs) !== canonical(reqs)) throw new Error('QUOTE_REQUIREMENTS_MISMATCH');
           if (response.headers.get('payment-response')) throw new Error('UNEXPECTED_SETTLEMENT_HEADER');
 
+          console.log('PAYMENT_BOUNDARY_CHECK');
           console.log(JSON.stringify({
             ok: true,
-            external_origin: origin,
             status: response.status,
             payment_required_header_present: true,
             x402_version: terms.x402Version,
